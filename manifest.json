@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Funny Chrome Extension",
+  "description": "workday bad me good",
+  "version": "1.0",
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": "src/img/hello_extensions.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "webNavigation"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.myworkday.com/*"],
+      "js": ["dist/content.bundle.js"]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Funny Chrome Extension",
+  "description": "Gregor",
+  "version": "1.0",
+  "action": {
+    "default_icon": "hello_extensions.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "webNavigation"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.myworkday.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
