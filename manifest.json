@@ -5,7 +5,7 @@
   "version": "1.0",
   "action": {
     "default_popup": "src/popup.html",
-    "default_icon": "src/img/hello_extensions.png"
+    "default_icon": "src/Images/hello_extensions.png"
   },
   "permissions": [
     "storage",

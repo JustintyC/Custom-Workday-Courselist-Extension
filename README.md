@@ -1,2 +1,2 @@
-# Custom-Workday-Courselist-Extension
+# Custom Workday Courselist Extension
  

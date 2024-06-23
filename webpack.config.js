@@ -21,5 +21,5 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   mode: 'development', // Change to 'production' for production builds
-  devtool: 'cheap-module-source-map', // Use a safer source map option
+  devtool: 'cheap-module-source-map',
 };

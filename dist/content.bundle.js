@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/CourselistContainer.jsx":
-/*!*************************************!*\
-  !*** ./src/CourselistContainer.jsx ***!
-  \*************************************/
+/***/ "./src/CourseList/CourselistContainer.jsx":
+/*!************************************************!*\
+  !*** ./src/CourseList/CourselistContainer.jsx ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -14,9 +14,87 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _parseCourses_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parseCourses.js */ "./src/CourseList/parseCourses.js");
 
-function CourselistContainer() {
+
+function CourselistContainer(_ref) {
+  var courses = _ref.courses;
+  if (courses === null) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null);
+  (0,_parseCourses_js__WEBPACK_IMPORTED_MODULE_1__.parseCourses)(courses);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "hi"));
+}
+
+/***/ }),
+
+/***/ "./src/CourseList/parseCourses.js":
+/*!****************************************!*\
+  !*** ./src/CourseList/parseCourses.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   parseCourses: () => (/* binding */ parseCourses)
+/* harmony export */ });
+function parseCourses(courses) {
+  var tree = [];
+  /*
+              code
+              /  \
+            term  term
+           /    \ 
+        mode   mode
+      /  |  \
+    </> </> </>
+    {
+      code: ...
+      W1: {
+          Lecture: [ ... ]
+          Lab: [ ... ]        
+      }
+      W2: {
+          Lecture: [ ... ]
+          Lab: [ ... ]        
+      }    
+  }
+    Assumptions: workday's courselist is ordered
+  */
+
+  courses.forEach(function (course) {
+    // get course code, term, delivery mode (lecture, etc)
+    var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
+    var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
+    var title = nameDiv.textContent;
+    var subject = title.split(" ")[0];
+    var numbers = title.split(" ")[1].split("-")[0];
+    var code = "".concat(subject, " ").concat(numbers);
+    var modeSpan = course.querySelector("span.gwt-InlineLabel.WPVF.WOUF");
+    var modeText = modeSpan.textContent;
+    var mode = modeText.split("|")[0].trim().replace(" ", "");
+    var term;
+    try {
+      var detailsSpan = course.querySelector("span.WFQV.WBQV");
+      var detailsText = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent;
+      var range = detailsText.split("|").reverse()[0].trim();
+      var startMonth = parseInt(range.substring(5, 7));
+      if (1 <= startMonth && startMonth <= 4) term = "W2";else if (5 <= startMonth && startMonth <= 6) term = "S1";else if (7 <= startMonth && startMonth <= 8) term = "S2";else term = "W1";
+    } catch (error) {
+      term = "unspecified";
+    }
+
+    // insert course into tree
+    if (tree.length == 0 || tree[tree.length - 1]["code"] != code) {
+      tree.push({
+        code: code
+      });
+    }
+    var courseJson = tree[tree.length - 1];
+
+    // term
+    var termJson = courseJson[term] || (courseJson[term] = {});
+    termJson[mode] ? termJson[mode].push(course) : termJson[mode] = [course];
+  });
+  console.log(JSON.stringify(tree));
 }
 
 /***/ }),
@@ -33537,7 +33615,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _CourselistContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CourselistContainer */ "./src/CourselistContainer.jsx");
+/* harmony import */ var _CourseList_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CourseList/CourselistContainer */ "./src/CourseList/CourselistContainer.jsx");
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
@@ -33569,10 +33647,26 @@ function handleDOMChanges() {
   // handle the div that contains the course list
   var courseListContainer = document.querySelector('div.WB-N.WFYN');
   if (courseListContainer) {
+    var courses = null;
+    // handle the actual list itself
+    try {
+      var courseList = courseListContainer.querySelector("ul");
+      courses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
+      console.log(courses.length);
+      courses.forEach(function (course) {
+        var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
+        var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
+        // console.log(nameDiv.textContent);
+      });
+      // courseList.style.display = "none";
+    } catch (error) {
+      console.log(error);
+    }
+
     // inject react element if it's not there yet
     var check = document.getElementById("react-root");
     if (!check) {
-      // disconnect observer to prevent an infinite loop while injected element
+      // disconnect observer to prevent an infinite loop while injecting element
       disconnectObserver();
 
       // create a new element before the first child of the container
@@ -33583,26 +33677,12 @@ function handleDOMChanges() {
       // create a react root at the new element
       var container = document.getElementById("react-root");
       var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
-      root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__["default"], null));
-      reconnectObserver();
-    }
 
-    // handle the actual list itself
-    var courseList = courseListContainer.querySelector("ul");
-    if (courseList) {
-      var courses = courseList.querySelectorAll("li");
-      console.log(courses.length);
-      courses.forEach(function (course) {
-        try {
-          var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
-          var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
-          console.log(nameDiv.textContent);
-        } catch (error) {
-          // console.log(error);
-        }
-      });
-    } else {
-      console.log("No course list found");
+      // render custom container in root
+      root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CourseList_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        courses: courses
+      }));
+      reconnectObserver();
     }
   } else {
     console.log("Course list container not found");
