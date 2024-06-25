@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
+import CourseList from "./CourseList";
+import "./courseListStyles.css"
 
-export default function NewCourselistContainer() {
+export default function CourseListContainer() {
 
   const [ courses, setCourses ] = useState([]);
+  const [ parsedCourses, setParsedCourses ] = useState([]);
 
   // on mount: get courses loaded by current page, set observer to start observing 
   // for DOM changes and update courselist if changes are found
@@ -27,8 +30,20 @@ export default function NewCourselistContainer() {
             const courseList = courseListContainer.querySelector("ul");
             foundCourses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
             console.log(foundCourses.length);
-            setCourses(Array.from(foundCourses));
-            // courseList.style.display = "none";
+
+            // check if courses really changed before updating courses state
+            if (foundCourses.length !== courses.length) {
+              setCourses(foundCourses);
+            } else {
+              for (let i = 0; i < foundCourses.length; i++) {
+                if (foundCourses[i] !== courses[i]) {
+                  setCourses(foundCourses);
+                  break;
+                }
+              }
+            }
+
+            courseList.style.display = "none"; // comment this line out to show original course list
         } catch (error) {
             console.log(error);
         }
@@ -47,16 +62,16 @@ export default function NewCourselistContainer() {
     return (() => {
       observer.disconnect();
     });
-  }, []);
+  }, [courses]);
 
 
- 
-
-  parseCourses(courses);
+  useEffect(() => {
+    setParsedCourses(parseCourses(courses));
+  }, [courses]);
 
   return (
-    <div>
-      <h1>{courses.length}</h1>
-    </div>
+    <>
+      <CourseList coursesArr={parsedCourses}/>
+    </>
   )
 }

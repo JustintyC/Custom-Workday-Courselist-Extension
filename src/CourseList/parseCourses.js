@@ -1,7 +1,8 @@
+// returns an array of jsons for each course
 export function parseCourses(courses) {
-    let tree = [];
+    let out = [];
     /*
-                code
+                code (& name)
                 /  \
               term  term
              /    \ 
@@ -11,6 +12,7 @@ export function parseCourses(courses) {
 
     {
         code: ...
+        name: ...
         W1: {
             Lecture: [ ... ]
             Lab: [ ... ]        
@@ -26,13 +28,14 @@ export function parseCourses(courses) {
 
 
     courses.forEach((course) => {
-        // get course code, term, delivery mode (lecture, etc)
+        // get course code, term, delivery mode (lecture, etc), course name
         const titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
         const nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
         const title = nameDiv.textContent;
         const subject = title.split(" ")[0];
         const numbers = title.split(" ")[1].split("-")[0];
         const code = `${subject} ${numbers}`;
+        const name = title.split(" - ")[1].trim();
 
         const modeSpan = course.querySelector("span.gwt-InlineLabel.WPVF.WOUF");
         const modeText = modeSpan.textContent;
@@ -52,11 +55,11 @@ export function parseCourses(courses) {
             term = "unspecified";
         }
 
-        // insert course into tree
-        if (tree.length == 0 || tree[tree.length - 1]["code"] != code) {
-            tree.push({ code: code });
+        // insert course into output
+        if (out.length == 0 || out[out.length - 1]["code"] != code) {
+            out.push({ code: code, name: name });
         }
-        let courseJson = tree[tree.length - 1];
+        let courseJson = out[out.length - 1];
 
         // term
         let termJson = courseJson[term] || (courseJson[term] = {});
@@ -65,6 +68,6 @@ export function parseCourses(courses) {
         termJson[mode] ? termJson[mode].push(course) : termJson[mode] = [course];
     });
 
-    console.log(JSON.stringify(tree));
-    return tree;
+    console.log(JSON.stringify(out));
+    return out;
 }
