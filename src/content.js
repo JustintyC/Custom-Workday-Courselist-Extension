@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import CourselistContainer from './CourseList/CourselistContainer';
+import NewCourselistContainer from './CourseList/NewCourselistContainer';
 
 console.log("contents.js loaded");
 
@@ -16,26 +16,9 @@ const observer = new MutationObserver((mutationsList, observer) => {
 });
 
 function handleDOMChanges() {
-    // handle the div that contains the course list
+    // find the div that contains the course list
     const courseListContainer = document.querySelector('div.WB-N.WFYN');
     if (courseListContainer) {
-
-        let courses = null;
-        // handle the actual list itself
-        try {
-            const courseList = courseListContainer.querySelector("ul");
-            courses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
-            console.log(courses.length);
-            // courses.forEach((course) => {
-            //     const titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
-            //     const nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
-            //     console.log(nameDiv.textContent);
-            // });
-            // courseList.style.display = "none";
-        } catch (error) {
-            console.log(error);
-        }
-
         // inject react element if it's not there yet
         const check = document.getElementById("react-root");
         if (!check) {
@@ -52,7 +35,7 @@ function handleDOMChanges() {
             const root = createRoot(container);
 
             // render custom container in root
-            root.render(<CourselistContainer courses={courses}/>);
+            root.render(<NewCourselistContainer/>);
 
             reconnectObserver();            
         }

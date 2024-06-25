@@ -61,6 +61,7 @@ export function parseCourses(courses) {
         // term
         let termJson = courseJson[term] || (courseJson[term] = {});
 
+        // node (web) element
         termJson[mode] ? termJson[mode].push(course) : termJson[mode] = [course];
     });
 

@@ -2,26 +2,85 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/CourseList/CourselistContainer.jsx":
-/*!************************************************!*\
-  !*** ./src/CourseList/CourselistContainer.jsx ***!
-  \************************************************/
+/***/ "./src/CourseList/NewCourselistContainer.jsx":
+/*!***************************************************!*\
+  !*** ./src/CourseList/NewCourselistContainer.jsx ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CourselistContainer)
+/* harmony export */   "default": () => (/* binding */ NewCourselistContainer)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _parseCourses_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./parseCourses.js */ "./src/CourseList/parseCourses.js");
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
-function CourselistContainer(_ref) {
-  var courses = _ref.courses;
-  if (courses === null) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null);
+function NewCourselistContainer() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    courses = _useState2[0],
+    setCourses = _useState2[1];
+
+  // on mount: get courses loaded by current page, set observer to start observing 
+  // for DOM changes and update courselist if changes are found
+  // on dismount: disconnect observer
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var observer = new MutationObserver(function (mutationsList, observer) {
+      var _iterator = _createForOfIteratorHelper(mutationsList),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var mutation = _step.value;
+          if (mutation.type === 'childList' || mutation.type === 'subtree') {
+            updateCourselist();
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    });
+    function updateCourselist() {
+      var courseListContainer = document.querySelector('div.WB-N.WFYN');
+      if (courseListContainer) {
+        var foundCourses = null;
+        // handle the actual list itself
+        try {
+          var courseList = courseListContainer.querySelector("ul");
+          foundCourses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
+          console.log(foundCourses.length);
+          setCourses(Array.from(foundCourses));
+          // courseList.style.display = "none";
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    // initial fetch courses call to fill new courselist on mount
+    updateCourselist();
+
+    // start observing DOM
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+    return function () {
+      observer.disconnect();
+    };
+  }, []);
   (0,_parseCourses_js__WEBPACK_IMPORTED_MODULE_1__.parseCourses)(courses);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "hi"));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, courses.length));
 }
 
 /***/ }),
@@ -95,6 +154,7 @@ function parseCourses(courses) {
     termJson[mode] ? termJson[mode].push(course) : termJson[mode] = [course];
   });
   console.log(JSON.stringify(tree));
+  return tree;
 }
 
 /***/ }),
@@ -33615,7 +33675,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _CourseList_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CourseList/CourselistContainer */ "./src/CourseList/CourselistContainer.jsx");
+/* harmony import */ var _CourseList_NewCourselistContainer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CourseList/NewCourselistContainer */ "./src/CourseList/NewCourselistContainer.jsx");
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
@@ -33653,11 +33713,11 @@ function handleDOMChanges() {
       var courseList = courseListContainer.querySelector("ul");
       courses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
       console.log(courses.length);
-      courses.forEach(function (course) {
-        var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
-        var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
-        // console.log(nameDiv.textContent);
-      });
+      // courses.forEach((course) => {
+      //     const titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
+      //     const nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
+      //     console.log(nameDiv.textContent);
+      // });
       // courseList.style.display = "none";
     } catch (error) {
       console.log(error);
@@ -33679,9 +33739,7 @@ function handleDOMChanges() {
       var root = (0,react_dom_client__WEBPACK_IMPORTED_MODULE_1__.createRoot)(container);
 
       // render custom container in root
-      root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CourseList_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        courses: courses
-      }));
+      root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CourseList_NewCourselistContainer__WEBPACK_IMPORTED_MODULE_2__["default"], null));
       reconnectObserver();
     }
   } else {
