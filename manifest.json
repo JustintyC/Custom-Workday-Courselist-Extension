@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Funny Chrome Extension",
-  "description": "workday bad me good",
+  "name": "Better Workday Courselist",
+  "description": "Reformats UBC Workday's course search list.",
   "version": "1.0",
   "action": {
     "default_popup": "src/popup.html",
