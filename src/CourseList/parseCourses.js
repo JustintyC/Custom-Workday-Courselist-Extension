@@ -89,7 +89,6 @@ export function parseCourses(courses) {
             else if (7 <= startMonth && startMonth <= 8) term = "S2";
             else term = "W1";
         } catch (error) {
-            console.log(error);
             // section details is empty
             term = "Unspecified";
             days = "";

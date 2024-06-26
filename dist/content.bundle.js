@@ -23,42 +23,6 @@ function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" !=
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
-
-/*
-{
-    code: ...
-    name: ...
-    W1: {
-        Lecture: [ ... ]
-        Lab: [ ... ]        
-    }
-    W2: {
-        Lecture: [ ... ]
-        Lab: [ ... ]        
-    }    
-}
-
-Code                            <- Course
-| W1                            <- Term
-| | Lecture                     <- Mode
-| | | </>
-| | | </>
-| | Lab                         <- Mode
-| | | </>
-| | | </>
-| W2                            <- Term
-| | Lecture                     <- Mode
-| | | </>
-| | | </>
-| | Lab             
-| | | </>
-| | | </>
-Code
-| ...
-
-
-*/
-
 function CourseList(_ref) {
   var coursesArr = _ref.coursesArr;
   return coursesArr.map(function (courseJson) {
@@ -73,12 +37,12 @@ function Course(_ref2) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     visible = _useState2[0],
-    setVisibilty = _useState2[1];
+    setVisibility = _useState2[1];
   var terms = Object.keys(courseJson).slice(2);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     className: "CodeButton",
     onClick: function onClick() {
-      return setVisibilty(!visible);
+      return setVisibility(!visible);
     }
   }, "".concat(courseJson["code"], " - ").concat(courseJson["name"])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -98,12 +62,12 @@ function Term(_ref3) {
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
     visible = _useState4[0],
-    setVisibilty = _useState4[1];
+    setVisibility = _useState4[1];
   var modes = Object.keys(termJson);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     className: "TermButton",
     onClick: function onClick() {
-      return setVisibilty(!visible);
+      return setVisibility(!visible);
     }
   }, term), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -123,45 +87,45 @@ function Mode(_ref4) {
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState6 = _slicedToArray(_useState5, 2),
     visible = _useState6[0],
-    setVisibilty = _useState6[1];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
-    "class": "SectionsTable"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    setVisibility = _useState6[1];
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     className: "ModeButton",
     onClick: function onClick() {
-      return setVisibilty(!visible);
+      return setVisibility(!visible);
     }
-  }, mode), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", {
+  }, mode), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+    className: "SectionsTable",
     style: {
-      display: visible ? 'block' : 'none'
+      display: visible ? 'table' : 'none'
     }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", {
+    className: "SectionsTableBody"
   }, modeArr.map(function (section) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Section, {
       key: (0,uuid__WEBPACK_IMPORTED_MODULE_1__["default"])(),
       section: section
     });
-  })));
+  }))));
 }
-/*
-    const section = {
-        "courseCode": courseCode,
-        "sectionCode": sectionCode,
-        "courseName": courseName,
-        "deliveryMode": deliveryMode,
-        "sectionType": sectionType,
-        "learningType": learningType,
-        "term": term,
-        "days": days,
-        "time": time,
-        "url": url            
-    }
-*/
 function Section(_ref5) {
   var section = _ref5.section;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
-    href: section["url"],
-    target: "_blank"
-  }, section["sectionCode"])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["sectionType"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["learningType"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["days"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["time"]));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
+    className: "SectionChild"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+    href: section.url,
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, section.sectionCode)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd"
+  }, section.sectionType), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd"
+  }, section.learningType), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd"
+  }, section.days), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd"
+  }, section.time));
 }
 
 /***/ }),
@@ -243,8 +207,7 @@ function CourseListContainer() {
               }
             }
           }
-
-          // courseList.style.display = "none"; // comment this line out to show original course list
+          courseList.style.display = "none"; // comment this line out to show original course list
         } catch (error) {
           console.log(error);
         }
@@ -362,7 +325,6 @@ function parseCourses(courses) {
       var startMonth = parseInt(range.substring(5, 7));
       if (1 <= startMonth && startMonth <= 4) term = "W2";else if (5 <= startMonth && startMonth <= 6) term = "S1";else if (7 <= startMonth && startMonth <= 8) term = "S2";else term = "W1";
     } catch (error) {
-      console.log(error);
       // section details is empty
       term = "Unspecified";
       days = "";
@@ -431,75 +393,73 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton {
-    display: inline-block;
-    background-color: #969cbb;
+___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton, .SectionChildTd {
+    font: 14px Arial, sans-serif;
+}
+
+.CodeButton, .TermButton, .ModeButton {
+    display: block; 
+    background-color: #FFFFFF;
     padding: 10px;
-    border: none;
     width: 100%;
     text-align: left;
     position: relative; 
+    border: none;
+    border-top: none;
 }
 
-.CodeButton::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px; 
-    background-color: #24282b; 
+.CodeButton {
+    border: 0.5px solid #CFD4D7;
+    border-top: none;
+}
+
+.CodeButton:first-child {
+    border-top: 0.5px solid #CFD4D7;
+}
+
+.CodeButton:hover {
+    background-color: #f1f1f1; 
 }
 
 .TermButton {
-    display: inline-block;
-    background-color: #a8b5d1;
-    padding: 10px;
-    border: none;
-    width: 100%;
-    text-align: left;
-    position: relative; 
+    background-color: #CFD4D7;
 }
 
-.TermButton::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px; 
-    background-color: #24282b; 
+.TermButton:hover {
+    background-color: #c5cccf; 
 }
 
 .ModeButton {
-    display: inline-block;
     background-color: #D7E0E7;
-    padding: 10px;
-    border: none;
-    width: 100%;
-    text-align: left;
-    position: relative; 
 }
 
-.ModeButton::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px; 
-    background-color: #24282b;
+.ModeButton:hover {
+    background-color: #d2dce4; 
 }
 
 .SectionsTable {
-    display: inline-block;
-    background-color: #D7E0E7;
-    padding: 10px;
-    border: none;
     width: 100%;
-    text-align: left;
-    position: relative; 
-}`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB","sourcesContent":[".CodeButton {\r\n    display: inline-block;\r\n    background-color: #969cbb;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.CodeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.TermButton {\r\n    display: inline-block;\r\n    background-color: #a8b5d1;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.TermButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.ModeButton {\r\n    display: inline-block;\r\n    background-color: #D7E0E7;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.ModeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b;\r\n}\r\n\r\n.SectionsTable {\r\n    display: inline-block;\r\n    background-color: #D7E0E7;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}"],"sourceRoot":""}]);
+    border-collapse: collapse;
+}
+
+.SectionChild {
+    width: 100%;
+}
+
+.SectionChildTd {
+    width: 20%;
+    text-align: center;
+    padding: 10px;
+}
+
+.SectionChild:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.SectionChild:nth-child(even) {
+    background-color: #ffffff;
+}
+`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,4BAA4B;AAChC;;AAEA;IACI,cAAc;IACd,yBAAyB;IACzB,aAAa;IACb,WAAW;IACX,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,+BAA+B;AACnC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,UAAU;IACV,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B","sourcesContent":[".CodeButton, .TermButton, .ModeButton, .SectionChildTd {\r\n    font: 14px Arial, sans-serif;\r\n}\r\n\r\n.CodeButton, .TermButton, .ModeButton {\r\n    display: block; \r\n    background-color: #FFFFFF;\r\n    padding: 10px;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n    border: none;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton {\r\n    border: 0.5px solid #CFD4D7;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton:first-child {\r\n    border-top: 0.5px solid #CFD4D7;\r\n}\r\n\r\n.CodeButton:hover {\r\n    background-color: #f1f1f1; \r\n}\r\n\r\n.TermButton {\r\n    background-color: #CFD4D7;\r\n}\r\n\r\n.TermButton:hover {\r\n    background-color: #c5cccf; \r\n}\r\n\r\n.ModeButton {\r\n    background-color: #D7E0E7;\r\n}\r\n\r\n.ModeButton:hover {\r\n    background-color: #d2dce4; \r\n}\r\n\r\n.SectionsTable {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n}\r\n\r\n.SectionChild {\r\n    width: 100%;\r\n}\r\n\r\n.SectionChildTd {\r\n    width: 20%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChild:nth-child(odd) {\r\n    background-color: #f2f2f2;\r\n}\r\n\r\n.SectionChild:nth-child(even) {\r\n    background-color: #ffffff;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
