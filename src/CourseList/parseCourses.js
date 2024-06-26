@@ -70,7 +70,6 @@ export function parseCourses(courses) {
         const learningType = modeTextArr[2].replace("Learning", "").trim();     // learning type
 
         // section details
-        // TODO: support for multi-term courses
         let term;
         let days;
         let time;
@@ -80,14 +79,31 @@ export function parseCourses(courses) {
             days = detailsTextArr[1].trim();
             time = detailsTextArr[2].trim();
             
-            
-            // term logic
+            /*
+            term logic
+
+            Check start and end dates. If start and end dates don't fall into the same term period,
+            set term to [Start term] - [End term]. Else just the term it is in
+
+            2025-01-06 - 2025-02-12
+            */
             const range = detailsTextArr[3].trim();
+            function getTerm(month) {
+                if (1 <= month && month <= 4) return "W2";
+                if (5 <= month && month <= 6) return "S1";
+                if (7 <= month && month <= 8) return "S2";
+                return "W1";
+            }
+            
             let startMonth = parseInt(range.substring(5, 7));
-            if (1 <= startMonth && startMonth <= 4) term = "W2";
-            else if (5 <= startMonth && startMonth <= 6) term = "S1";
-            else if (7 <= startMonth && startMonth <= 8) term = "S2";
-            else term = "W1";
+            let startTerm = getTerm(startMonth);
+            
+            let endMonth = parseInt(range.substring(18, 20));
+            let endTerm = getTerm(endMonth);
+
+            if (startTerm !== endTerm) {
+                term = `${startTerm} - ${endTerm}`;
+            } else term = startTerm;
         } catch (error) {
             // section details is empty
             term = "Unspecified";
