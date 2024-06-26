@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 /*
@@ -91,15 +91,59 @@ function Term({termJson, term}) {
 function Mode({modeArr, mode}) {
     const [ visible, setVisibilty ] = useState(false);
 
+
+
     return (
-        <>
+        <table class="SectionsTable">
             <button className="ModeButton" onClick={() => setVisibilty(!visible)}>
                 {mode}
             </button>
         
-            <div style={{ display: visible ? 'block' : 'none' }}>
-                <h1>he he</h1>
-            </div>
-        </>
+            <tbody style={{ display: visible ? 'block' : 'none' }}>
+                {modeArr.map((section) => {
+                    return <Section key={uuidv4()} section={section}/>;
+                })}
+            </tbody>
+        </table>
+    )
+}
+/*
+    const section = {
+        "courseCode": courseCode,
+        "sectionCode": sectionCode,
+        "courseName": courseName,
+        "deliveryMode": deliveryMode,
+        "sectionType": sectionType,
+        "learningType": learningType,
+        "term": term,
+        "days": days,
+        "time": time,
+        "url": url            
+    }
+*/
+function Section({section}) {
+
+
+    return (
+        <tr>
+            <td>
+                <a href={section["url"]} target="_blank">{section["sectionCode"]}</a>
+            </td>
+            <td>
+                {section["sectionType"]}
+            </td>
+            <td>
+                {section["learningType"]}
+            </td>
+            <td>
+                {section["days"]}
+            </td>
+            <td>
+                {section["time"]}
+            </td>
+            
+        
+        
+        </tr>
     )
 }

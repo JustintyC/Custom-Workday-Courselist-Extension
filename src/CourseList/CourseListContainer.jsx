@@ -43,7 +43,7 @@ export default function CourseListContainer() {
               }
             }
 
-            courseList.style.display = "none"; // comment this line out to show original course list
+            // courseList.style.display = "none"; // comment this line out to show original course list
         } catch (error) {
             console.log(error);
         }

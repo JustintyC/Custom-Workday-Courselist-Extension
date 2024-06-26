@@ -124,31 +124,44 @@ function Mode(_ref4) {
     _useState6 = _slicedToArray(_useState5, 2),
     visible = _useState6[0],
     setVisibilty = _useState6[1];
-
-  // Function to convert DOM nodes to React elements
-  var convertNodesToElements = function convertNodesToElements(nodes) {
-    return Array.from(nodes).map(function (node, index) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        key: index,
-        className: "modeItem"
-      }, node.outerHTML);
-    });
-  };
-
-  // Handle click to toggle visibility
-  var handleClick = function handleClick() {
-    setVisible(!visible);
-  };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+    "class": "SectionsTable"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     className: "ModeButton",
     onClick: function onClick() {
       return setVisibilty(!visible);
     }
-  }, mode), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, mode), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", {
     style: {
       display: visible ? 'block' : 'none'
     }
-  }, convertNodesToElements(modeArr)));
+  }, modeArr.map(function (section) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Section, {
+      key: (0,uuid__WEBPACK_IMPORTED_MODULE_1__["default"])(),
+      section: section
+    });
+  })));
+}
+/*
+    const section = {
+        "courseCode": courseCode,
+        "sectionCode": sectionCode,
+        "courseName": courseName,
+        "deliveryMode": deliveryMode,
+        "sectionType": sectionType,
+        "learningType": learningType,
+        "term": term,
+        "days": days,
+        "time": time,
+        "url": url            
+    }
+*/
+function Section(_ref5) {
+  var section = _ref5.section;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+    href: section["url"],
+    target: "_blank"
+  }, section["sectionCode"])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["sectionType"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["learningType"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["days"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, section["time"]));
 }
 
 /***/ }),
@@ -230,7 +243,8 @@ function CourseListContainer() {
               }
             }
           }
-          courseList.style.display = "none"; // comment this line out to show original course list
+
+          // courseList.style.display = "none"; // comment this line out to show original course list
         } catch (error) {
           console.log(error);
         }
@@ -296,33 +310,91 @@ function parseCourses(courses) {
   */
 
   courses.forEach(function (course) {
-    // get course code, term, delivery mode (lecture, etc), course name
+    /*
+    from each course HTML element, retrieve:
+      from title:
+    - course code (e.g. CPSC_V 100)
+    - section code (e.g. CPSC_V 100-001)
+    - course name (e.g. Introduction to toilet cleaning)
+      from middle row:
+    - delivery mode (e.g. lecture, lab)
+    - section type (e.g. Open, Waitlist, etc)
+    - learning type (e.g. in person, hybrid, etc)
+      from section details:
+    - days (e.g. Mon Wed Fri)
+    - start & end time (e.g. 10:00 a.m. - 11:00 a.m.)
+    - term from start & end date (e.g. 2024-09-03 - 2024-12-06 -> W1)
+      from DOM:
+    - url for the section
+      */
+
+    // title
     var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
     var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
     var title = nameDiv.textContent;
     var subject = title.split(" ")[0];
     var numbers = title.split(" ")[1].split("-")[0];
-    var code = "".concat(subject, " ").concat(numbers);
-    var name = title.split(" - ")[1].trim();
+    var courseCode = "".concat(subject, " ").concat(numbers); // course code
+    var courseName = title.split(" - ")[1].trim(); // course name
+    var sectionCode = title.split(" - ")[0].trim(); // section code
+
+    // middle row
+    // mode
     var modeSpan = course.querySelector("span.gwt-InlineLabel.WPVF.WOUF");
-    var modeText = modeSpan.textContent;
-    var mode = modeText.split("|")[0].trim().replace(" ", "");
+    var modeTextArr = modeSpan.textContent.split("|");
+    var deliveryMode = modeTextArr[0].trim().replace(" ", ""); // delivery mode
+    var sectionType = modeTextArr[1].trim(); // section type
+    var learningType = modeTextArr[2].replace("Learning", "").trim(); // learning type
+
+    // section details
+    // TODO: support for multi-term courses
     var term;
+    var days;
+    var time;
     try {
       var detailsSpan = course.querySelector("span.WFQV.WBQV");
-      var detailsText = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent;
-      var range = detailsText.split("|").reverse()[0].trim();
+      var detailsTextArr = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent.split("|");
+      days = detailsTextArr[1].trim();
+      time = detailsTextArr[2].trim();
+
+      // term logic
+      var range = detailsTextArr[3].trim();
       var startMonth = parseInt(range.substring(5, 7));
       if (1 <= startMonth && startMonth <= 4) term = "W2";else if (5 <= startMonth && startMonth <= 6) term = "S1";else if (7 <= startMonth && startMonth <= 8) term = "S2";else term = "W1";
     } catch (error) {
-      term = "unspecified";
+      console.log(error);
+      // section details is empty
+      term = "Unspecified";
+      days = "";
+      time = "";
     }
 
+    // URL
+    var urlDiv = course.querySelector("div.WKNO.WEMO.WOMO");
+    var dataAutomationId = urlDiv.getAttribute("data-automation-id");
+    var daIdFirstHalf = dataAutomationId.split("_")[1].split("$")[0];
+    var daIdSecondHalf = dataAutomationId.split("_")[1].split("$")[1];
+    var url = "https://wd10.myworkday.com/ubc/d/inst/1$".concat(daIdFirstHalf, "/").concat(daIdFirstHalf, "$").concat(daIdSecondHalf, ".htmld");
+
+    // construct course object
+    var courseObj = {
+      "courseCode": courseCode,
+      "sectionCode": sectionCode,
+      "courseName": courseName,
+      "deliveryMode": deliveryMode,
+      "sectionType": sectionType,
+      "learningType": learningType,
+      "term": term,
+      "days": days,
+      "time": time,
+      "url": url
+    };
+
     // insert course into output
-    if (out.length == 0 || out[out.length - 1]["code"] != code) {
+    if (out.length == 0 || out[out.length - 1]["code"] != courseCode) {
       out.push({
-        code: code,
-        name: name
+        code: courseCode,
+        name: courseName
       });
     }
     var courseJson = out[out.length - 1];
@@ -330,10 +402,11 @@ function parseCourses(courses) {
     // term
     var termJson = courseJson[term] || (courseJson[term] = {});
 
-    // node (web) element
-    termJson[mode] ? termJson[mode].push(course) : termJson[mode] = [course];
+    // course obj
+    termJson[deliveryMode] ? termJson[deliveryMode].push(courseObj) : termJson[deliveryMode] = [courseObj];
   });
-  console.log(JSON.stringify(out));
+
+  // console.log(JSON.stringify(out));
   return out;
 }
 
@@ -416,7 +489,17 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton {
     width: 100%;
     height: 1px; 
     background-color: #24282b;
-}`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B","sourcesContent":[".CodeButton {\r\n    display: inline-block;\r\n    background-color: #969cbb;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.CodeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.TermButton {\r\n    display: inline-block;\r\n    background-color: #a8b5d1;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.TermButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.ModeButton {\r\n    display: inline-block;\r\n    background-color: #D7E0E7;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.ModeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b;\r\n}"],"sourceRoot":""}]);
+}
+
+.SectionsTable {
+    display: inline-block;
+    background-color: #D7E0E7;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    text-align: left;
+    position: relative; 
+}`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,WAAW;IACX,kBAAkB;IAClB,SAAS;IACT,OAAO;IACP,WAAW;IACX,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,qBAAqB;IACrB,yBAAyB;IACzB,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,kBAAkB;AACtB","sourcesContent":[".CodeButton {\r\n    display: inline-block;\r\n    background-color: #969cbb;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.CodeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.TermButton {\r\n    display: inline-block;\r\n    background-color: #a8b5d1;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.TermButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b; \r\n}\r\n\r\n.ModeButton {\r\n    display: inline-block;\r\n    background-color: #D7E0E7;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}\r\n\r\n.ModeButton::after {\r\n    content: '';\r\n    position: absolute;\r\n    bottom: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 1px; \r\n    background-color: #24282b;\r\n}\r\n\r\n.SectionsTable {\r\n    display: inline-block;\r\n    background-color: #D7E0E7;\r\n    padding: 10px;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -57,3 +57,13 @@
     height: 1px; 
     background-color: #24282b;
 }
+
+.SectionsTable {
+    display: inline-block;
+    background-color: #D7E0E7;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    text-align: left;
+    position: relative; 
+}
