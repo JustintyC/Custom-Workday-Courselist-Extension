@@ -72,13 +72,26 @@ function Mode({ modeArr, mode }) {
         </>
     )
 }
-
-
+/*
+const section = {
+    "courseCode": courseCode,
+    "sectionCode": sectionCode,
+    "courseName": courseName,
+    "deliveryMode": deliveryMode,
+    "sectionType": sectionType,
+    "learningType": learningType,
+    "term": term,
+    "days": days,
+    "time": time,
+    "url": url            
+}
+*/
 
 function Section({ section }) {
     return (
         <tr className="SectionChild">
             <td className="SectionChildTd">
+                <div className="AddButtonGoHere" id={section.sectionCode}></div>
                 <a href={section.url} target="_blank" rel="noopener noreferrer">
                     {section.sectionCode}
                 </a>

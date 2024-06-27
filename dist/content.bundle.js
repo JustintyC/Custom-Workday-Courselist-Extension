@@ -109,13 +109,31 @@ function Mode(_ref4) {
     });
   }))));
 }
+/*
+const section = {
+    "courseCode": courseCode,
+    "sectionCode": sectionCode,
+    "courseName": courseName,
+    "deliveryMode": deliveryMode,
+    "sectionType": sectionType,
+    "learningType": learningType,
+    "term": term,
+    "days": days,
+    "time": time,
+    "url": url            
+}
+*/
+
 function Section(_ref5) {
   var section = _ref5.section;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
     className: "SectionChild"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
     className: "SectionChildTd"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "AddButtonGoHere",
+    id: section.sectionCode
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
     href: section.url,
     target: "_blank",
     rel: "noopener noreferrer"
