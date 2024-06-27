@@ -44,7 +44,9 @@ function Course(_ref2) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(courseJson["code"], " - ").concat(courseJson["name"])), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "".concat(courseJson["code"], " - ").concat(courseJson["name"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "arrow"
+  }, visible ? "\u2BC6" : "\u2BC7")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: visible ? 'block' : 'none'
     }
@@ -69,7 +71,7 @@ function Term(_ref3) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, term), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "".concat(visible ? "\u2BC6" : "\u2BC8", " ").concat(term)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: visible ? 'block' : 'none'
     }
@@ -93,7 +95,7 @@ function Mode(_ref4) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, mode), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+  }, "".concat(visible ? "\u2BC6" : "\u2BC8", " ").concat(mode)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
     className: "SectionsTable",
     style: {
       display: visible ? 'table' : 'none'
@@ -436,8 +438,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
     background-color: #f1f1f1; 
 }
 
+.arrow {
+    position: absolute;
+    right: 10px;
+    color: #CFD4D7;
+}
+
 .TermButton {
     background-color: #CFD4D7;
+    margin-left: 5px;
+    width: calc(100% - 5px);
 }
 
 .TermButton:hover {
@@ -446,6 +456,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
 
 .ModeButton {
     background-color: #D7E0E7;
+    margin-left: 10px;
+    width: calc(100% - 10px);
 }
 
 .ModeButton:hover {
@@ -453,8 +465,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
 }
 
 .SectionsTable {
-    width: 100%;
     border-collapse: collapse;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+    border: 0.5px solid #d2dce4;
+    border-top: none;
 }
 
 .SectionChild {
@@ -474,7 +489,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
 .SectionChild:nth-child(even) {
     background-color: #ffffff;
 }
-`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,4BAA4B;AAChC;;AAEA;IACI,cAAc;IACd,yBAAyB;IACzB,aAAa;IACb,WAAW;IACX,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,+BAA+B;AACnC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,WAAW;IACX,yBAAyB;AAC7B;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,UAAU;IACV,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B","sourcesContent":[".CodeButton, .TermButton, .ModeButton, .SectionChildTd {\r\n    font: 14px Arial, sans-serif;\r\n}\r\n\r\n.CodeButton, .TermButton, .ModeButton {\r\n    display: block; \r\n    background-color: #FFFFFF;\r\n    padding: 10px;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n    border: none;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton {\r\n    border: 0.5px solid #CFD4D7;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton:first-child {\r\n    border-top: 0.5px solid #CFD4D7;\r\n}\r\n\r\n.CodeButton:hover {\r\n    background-color: #f1f1f1; \r\n}\r\n\r\n.TermButton {\r\n    background-color: #CFD4D7;\r\n}\r\n\r\n.TermButton:hover {\r\n    background-color: #c5cccf; \r\n}\r\n\r\n.ModeButton {\r\n    background-color: #D7E0E7;\r\n}\r\n\r\n.ModeButton:hover {\r\n    background-color: #d2dce4; \r\n}\r\n\r\n.SectionsTable {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n}\r\n\r\n.SectionChild {\r\n    width: 100%;\r\n}\r\n\r\n.SectionChildTd {\r\n    width: 20%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChild:nth-child(odd) {\r\n    background-color: #f2f2f2;\r\n}\r\n\r\n.SectionChild:nth-child(even) {\r\n    background-color: #ffffff;\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,4BAA4B;AAChC;;AAEA;IACI,cAAc;IACd,yBAAyB;IACzB,aAAa;IACb,WAAW;IACX,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,+BAA+B;AACnC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,kBAAkB;IAClB,WAAW;IACX,cAAc;AAClB;;AAEA;IACI,yBAAyB;IACzB,gBAAgB;IAChB,uBAAuB;AAC3B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;AAC5B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;IACxB,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,UAAU;IACV,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B","sourcesContent":[".CodeButton, .TermButton, .ModeButton, .SectionChildTd {\r\n    font: 14px Arial, sans-serif;\r\n}\r\n\r\n.CodeButton, .TermButton, .ModeButton {\r\n    display: block; \r\n    background-color: #FFFFFF;\r\n    padding: 10px;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n    border: none;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton {\r\n    border: 0.5px solid #CFD4D7;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton:first-child {\r\n    border-top: 0.5px solid #CFD4D7;\r\n}\r\n\r\n.CodeButton:hover {\r\n    background-color: #f1f1f1; \r\n}\r\n\r\n.arrow {\r\n    position: absolute;\r\n    right: 10px;\r\n    color: #CFD4D7;\r\n}\r\n\r\n.TermButton {\r\n    background-color: #CFD4D7;\r\n    margin-left: 5px;\r\n    width: calc(100% - 5px);\r\n}\r\n\r\n.TermButton:hover {\r\n    background-color: #c5cccf; \r\n}\r\n\r\n.ModeButton {\r\n    background-color: #D7E0E7;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n}\r\n\r\n.ModeButton:hover {\r\n    background-color: #d2dce4; \r\n}\r\n\r\n.SectionsTable {\r\n    border-collapse: collapse;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n    border: 0.5px solid #d2dce4;\r\n    border-top: none;\r\n}\r\n\r\n.SectionChild {\r\n    width: 100%;\r\n}\r\n\r\n.SectionChildTd {\r\n    width: 20%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChild:nth-child(odd) {\r\n    background-color: #f2f2f2;\r\n}\r\n\r\n.SectionChild:nth-child(even) {\r\n    background-color: #ffffff;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -34645,6 +34660,10 @@ function handleDOMChanges() {
   } else {
     console.log("Course list container not found");
   }
+
+  // removes the expand button
+  var expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
+  if (expandButton) expandButton.style.display = "none";
 }
 function disconnectObserver() {
   observer.disconnect();

@@ -26,8 +26,16 @@
     background-color: #f1f1f1; 
 }
 
+.arrow {
+    position: absolute;
+    right: 10px;
+    color: #CFD4D7;
+}
+
 .TermButton {
     background-color: #CFD4D7;
+    margin-left: 5px;
+    width: calc(100% - 5px);
 }
 
 .TermButton:hover {
@@ -36,6 +44,8 @@
 
 .ModeButton {
     background-color: #D7E0E7;
+    margin-left: 10px;
+    width: calc(100% - 10px);
 }
 
 .ModeButton:hover {
@@ -43,8 +53,11 @@
 }
 
 .SectionsTable {
-    width: 100%;
     border-collapse: collapse;
+    margin-left: 10px;
+    width: calc(100% - 10px);
+    border: 0.5px solid #d2dce4;
+    border-top: none;
 }
 
 .SectionChild {

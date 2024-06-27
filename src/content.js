@@ -43,6 +43,10 @@ function handleDOMChanges() {
     } else {
         console.log("Course list container not found");
     }
+
+    // removes the expand button
+    const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
+    if (expandButton) expandButton.style.display = "none";
 }
 
 function disconnectObserver() {
