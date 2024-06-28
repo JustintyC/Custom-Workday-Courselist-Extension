@@ -46,9 +46,9 @@ function Course(_ref2) {
     }
   }, "".concat(courseJson["code"], " - ").concat(courseJson["name"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "arrow"
-  }, visible ? "⯆" : "⯇")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, visible ? "⯆" : "⯇")), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      display: visible ? 'block' : 'none'
+      display: "block"
     }
   }, terms.map(function (term) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Term, {
@@ -71,9 +71,9 @@ function Term(_ref3) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(visible ? "⯆" : "⯈", " ").concat(term)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "".concat(visible ? "⯆" : "⯈", " ").concat(term)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      display: visible ? 'block' : 'none'
+      display: "block"
     }
   }, modes.map(function (mode) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Mode, {
@@ -95,10 +95,10 @@ function Mode(_ref4) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(visible ? "⯆" : "⯈", " ").concat(mode)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+  }, "".concat(visible ? "⯆" : "⯈", " ").concat(mode)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
     className: "SectionsTable",
     style: {
-      display: visible ? 'table' : 'none'
+      display: "table"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", {
     className: "SectionsTableBody"
@@ -218,7 +218,7 @@ function CourseListContainer() {
         try {
           var courseList = courseListContainer.querySelector("ul");
           foundCourses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
-          console.log(foundCourses.length);
+          // console.log(foundCourses.length);
 
           // check if courses really changed before updating courses state
           if (foundCourses.length !== courses.length) {

@@ -20,13 +20,15 @@ function Course({ courseJson }) {
                 <span className="arrow">{visible? "⯆" : "⯇"}</span>
             </button>
 
-            <div style={{ display: visible ? 'block' : 'none' }}>
-                {
-                    terms.map((term) => {
-                        return <Term key={uuidv4()} termJson={courseJson[term]} term={term} />;
-                    })
-                }
-            </div>
+            {visible && (
+                <div style={{ display: "block" }}>
+                    {
+                        terms.map((term) => {
+                            return <Term key={uuidv4()} termJson={courseJson[term]} term={term} />;
+                        })
+                    }
+                </div>
+            )}
         </>
     );
 }
@@ -42,13 +44,15 @@ function Term({ termJson, term }) {
                 {`${visible? "⯆" : "⯈"} ${term}`}
             </button>
 
-            <div style={{ display: visible ? 'block' : 'none' }}>
-                {
-                    modes.map((mode) => {
-                        return <Mode key={uuidv4()} modeArr={termJson[mode]} mode={mode} />;
-                    })
-                }
-            </div>
+            {visible && (
+                <div style={{ display: "block" }}>
+                    {
+                        modes.map((mode) => {
+                            return <Mode key={uuidv4()} modeArr={termJson[mode]} mode={mode} />;
+                        })
+                    }
+                </div>                
+            )}
         </>
     );
 }
@@ -62,13 +66,15 @@ function Mode({ modeArr, mode }) {
                 {`${visible? "⯆" : "⯈"} ${mode}`}
             </button>
 
-            <table className="SectionsTable" style={{ display: visible ? 'table' : 'none' }}>
-                <tbody className="SectionsTableBody">
-                    {modeArr.map((section) => {
-                        return <Section key={uuidv4()} section={section} />;
-                    })}
-                </tbody>
-            </table>
+            {visible && (
+                <table className="SectionsTable" style={{ display: "table" }}>
+                    <tbody className="SectionsTableBody">
+                        {modeArr.map((section) => {
+                            return <Section key={uuidv4()} section={section} />;
+                        })}
+                    </tbody>
+                </table>                
+            )}
         </>
     )
 }

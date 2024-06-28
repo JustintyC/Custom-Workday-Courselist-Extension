@@ -29,7 +29,7 @@ export default function CourseListContainer() {
         try {
             const courseList = courseListContainer.querySelector("ul");
             foundCourses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
-            console.log(foundCourses.length);
+            // console.log(foundCourses.length);
 
             // check if courses really changed before updating courses state
             if (foundCourses.length !== courses.length) {
