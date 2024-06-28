@@ -10,10 +10,6 @@
     "128": "src/Images/icon128.png"
   },
   "permissions": [
-    "storage",
-    "activeTab",
-    "scripting",
-    "webNavigation"
   ],
   "background": {
     "service_worker": "src/background.js"
