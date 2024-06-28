@@ -90,16 +90,20 @@ const section = {
 function Section({ section }) {
     return (
         <tr className="SectionChild">
-            <td className="SectionChildTd">
-                <div className="AddButtonGoHere" id={section.sectionCode}></div>
-                <a href={section.url} target="_blank" rel="noopener noreferrer">
-                    {section.sectionCode}
-                </a>
+            <td className="SectionChildTd_long">
+                <div className="SectionChild_courseNameCell">
+                    <div className="AddButtonGoHere" id={section.sectionCode}></div>
+                    <div className="SectionChildTd_courseName">
+                        <a href={section.url} target="_blank" rel="noopener noreferrer">
+                            {section.sectionCode}
+                        </a>
+                    </div>                     
+                </div>               
             </td>
-            <td className="SectionChildTd">{section.sectionType}</td>
-            <td className="SectionChildTd">{section.learningType}</td>
-            <td className="SectionChildTd">{section.days}</td>
-            <td className="SectionChildTd">{section.time}</td>
+            <td className="SectionChildTd_short">{section.sectionType}</td>
+            <td className="SectionChildTd_short">{section.learningType}</td>
+            <td className="SectionChildTd_short">{section.days}</td>
+            <td className="SectionChildTd_long">{section.time}</td>
         </tr>
     );
 }

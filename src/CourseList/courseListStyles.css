@@ -1,4 +1,4 @@
-.CodeButton, .TermButton, .ModeButton, .SectionChildTd {
+.CodeButton, .TermButton, .ModeButton, .SectionChildTd_long, .SectionChildTd_short {
     font: 14px Arial, sans-serif;
 }
 
@@ -64,10 +64,26 @@
     width: 100%;
 }
 
-.SectionChildTd {
-    width: 20%;
+.SectionChildTd_long {
+    width: 25%;
     text-align: center;
     padding: 10px;
+}
+
+.SectionChildTd_short {
+    width: 16.67%;
+    text-align: center;
+    padding: 10px;
+}
+
+.SectionChild_courseNameCell {
+    display: flex;
+    flex-direction: row;
+}
+
+.SectionChildTd_courseName {
+    flex: 1;
+    width: auto;
 }
 
 .SectionChild:nth-child(odd) {

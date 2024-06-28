@@ -129,22 +129,26 @@ function Section(_ref5) {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
     className: "SectionChild"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "SectionChildTd"
+    className: "SectionChildTd_long"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "SectionChild_courseNameCell"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "AddButtonGoHere",
     id: section.sectionCode
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "SectionChildTd_courseName"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
     href: section.url,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, section.sectionCode)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "SectionChildTd"
+  }, section.sectionCode)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    className: "SectionChildTd_short"
   }, section.sectionType), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "SectionChildTd"
+    className: "SectionChildTd_short"
   }, section.learningType), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "SectionChildTd"
+    className: "SectionChildTd_short"
   }, section.days), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    className: "SectionChildTd"
+    className: "SectionChildTd_long"
   }, section.time));
 }
 
@@ -428,7 +432,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton, .SectionChildTd {
+___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton, .SectionChildTd_long, .SectionChildTd_short {
     font: 14px Arial, sans-serif;
 }
 
@@ -494,10 +498,26 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
     width: 100%;
 }
 
-.SectionChildTd {
-    width: 20%;
+.SectionChildTd_long {
+    width: 25%;
     text-align: center;
     padding: 10px;
+}
+
+.SectionChildTd_short {
+    width: 16.67%;
+    text-align: center;
+    padding: 10px;
+}
+
+.SectionChild_courseNameCell {
+    display: flex;
+    flex-direction: row;
+}
+
+.SectionChildTd_courseName {
+    flex: 1;
+    width: auto;
 }
 
 .SectionChild:nth-child(odd) {
@@ -507,7 +527,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.CodeButton, .TermButton, .ModeButton,
 .SectionChild:nth-child(even) {
     background-color: #ffffff;
 }
-`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,4BAA4B;AAChC;;AAEA;IACI,cAAc;IACd,yBAAyB;IACzB,aAAa;IACb,WAAW;IACX,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,+BAA+B;AACnC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,kBAAkB;IAClB,WAAW;IACX,cAAc;AAClB;;AAEA;IACI,yBAAyB;IACzB,gBAAgB;IAChB,uBAAuB;AAC3B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;AAC5B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;IACxB,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,UAAU;IACV,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B","sourcesContent":[".CodeButton, .TermButton, .ModeButton, .SectionChildTd {\r\n    font: 14px Arial, sans-serif;\r\n}\r\n\r\n.CodeButton, .TermButton, .ModeButton {\r\n    display: block; \r\n    background-color: #FFFFFF;\r\n    padding: 10px;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n    border: none;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton {\r\n    border: 0.5px solid #CFD4D7;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton:first-child {\r\n    border-top: 0.5px solid #CFD4D7;\r\n}\r\n\r\n.CodeButton:hover {\r\n    background-color: #f1f1f1; \r\n}\r\n\r\n.arrow {\r\n    position: absolute;\r\n    right: 10px;\r\n    color: #CFD4D7;\r\n}\r\n\r\n.TermButton {\r\n    background-color: #CFD4D7;\r\n    margin-left: 5px;\r\n    width: calc(100% - 5px);\r\n}\r\n\r\n.TermButton:hover {\r\n    background-color: #c5cccf; \r\n}\r\n\r\n.ModeButton {\r\n    background-color: #D7E0E7;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n}\r\n\r\n.ModeButton:hover {\r\n    background-color: #d2dce4; \r\n}\r\n\r\n.SectionsTable {\r\n    border-collapse: collapse;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n    border: 0.5px solid #d2dce4;\r\n    border-top: none;\r\n}\r\n\r\n.SectionChild {\r\n    width: 100%;\r\n}\r\n\r\n.SectionChildTd {\r\n    width: 20%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChild:nth-child(odd) {\r\n    background-color: #f2f2f2;\r\n}\r\n\r\n.SectionChild:nth-child(even) {\r\n    background-color: #ffffff;\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/CourseList/courseListStyles.css"],"names":[],"mappings":"AAAA;IACI,4BAA4B;AAChC;;AAEA;IACI,cAAc;IACd,yBAAyB;IACzB,aAAa;IACb,WAAW;IACX,gBAAgB;IAChB,kBAAkB;IAClB,YAAY;IACZ,gBAAgB;AACpB;;AAEA;IACI,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,+BAA+B;AACnC;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,kBAAkB;IAClB,WAAW;IACX,cAAc;AAClB;;AAEA;IACI,yBAAyB;IACzB,gBAAgB;IAChB,uBAAuB;AAC3B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;AAC5B;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;IACzB,iBAAiB;IACjB,wBAAwB;IACxB,2BAA2B;IAC3B,gBAAgB;AACpB;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,UAAU;IACV,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,aAAa;IACb,kBAAkB;IAClB,aAAa;AACjB;;AAEA;IACI,aAAa;IACb,mBAAmB;AACvB;;AAEA;IACI,OAAO;IACP,WAAW;AACf;;AAEA;IACI,yBAAyB;AAC7B;;AAEA;IACI,yBAAyB;AAC7B","sourcesContent":[".CodeButton, .TermButton, .ModeButton, .SectionChildTd_long, .SectionChildTd_short {\r\n    font: 14px Arial, sans-serif;\r\n}\r\n\r\n.CodeButton, .TermButton, .ModeButton {\r\n    display: block; \r\n    background-color: #FFFFFF;\r\n    padding: 10px;\r\n    width: 100%;\r\n    text-align: left;\r\n    position: relative; \r\n    border: none;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton {\r\n    border: 0.5px solid #CFD4D7;\r\n    border-top: none;\r\n}\r\n\r\n.CodeButton:first-child {\r\n    border-top: 0.5px solid #CFD4D7;\r\n}\r\n\r\n.CodeButton:hover {\r\n    background-color: #f1f1f1; \r\n}\r\n\r\n.arrow {\r\n    position: absolute;\r\n    right: 10px;\r\n    color: #CFD4D7;\r\n}\r\n\r\n.TermButton {\r\n    background-color: #CFD4D7;\r\n    margin-left: 5px;\r\n    width: calc(100% - 5px);\r\n}\r\n\r\n.TermButton:hover {\r\n    background-color: #c5cccf; \r\n}\r\n\r\n.ModeButton {\r\n    background-color: #D7E0E7;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n}\r\n\r\n.ModeButton:hover {\r\n    background-color: #d2dce4; \r\n}\r\n\r\n.SectionsTable {\r\n    border-collapse: collapse;\r\n    margin-left: 10px;\r\n    width: calc(100% - 10px);\r\n    border: 0.5px solid #d2dce4;\r\n    border-top: none;\r\n}\r\n\r\n.SectionChild {\r\n    width: 100%;\r\n}\r\n\r\n.SectionChildTd_long {\r\n    width: 25%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChildTd_short {\r\n    width: 16.67%;\r\n    text-align: center;\r\n    padding: 10px;\r\n}\r\n\r\n.SectionChild_courseNameCell {\r\n    display: flex;\r\n    flex-direction: row;\r\n}\r\n\r\n.SectionChildTd_courseName {\r\n    flex: 1;\r\n    width: auto;\r\n}\r\n\r\n.SectionChild:nth-child(odd) {\r\n    background-color: #f2f2f2;\r\n}\r\n\r\n.SectionChild:nth-child(even) {\r\n    background-color: #ffffff;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
