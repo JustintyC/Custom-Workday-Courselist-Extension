@@ -344,10 +344,12 @@ function parseCourses(courses) {
         if (7 <= month && month <= 8) return "S2";
         return "W1";
       };
+      // section details text: [location] | [days] | [time] | [date range]
+      // location may or may not be present
       var detailsSpan = course.querySelector("span.WFQV.WBQV");
       var detailsTextArr = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent.split("|");
-      days = detailsTextArr[1].trim();
-      time = detailsTextArr[2].trim();
+      days = detailsTextArr[detailsTextArr.length - 3].trim();
+      time = detailsTextArr[detailsTextArr.length - 2].trim();
 
       /*
       term logic
@@ -355,7 +357,7 @@ function parseCourses(courses) {
       set term to [Start term] - [End term]. Else just the term it is in
         2025-01-06 - 2025-02-12
       */
-      var range = detailsTextArr[3].trim();
+      var range = detailsTextArr[detailsTextArr.length - 1].trim();
       var startMonth = parseInt(range.substring(5, 7));
       var startTerm = getTerm(startMonth);
       var endMonth = parseInt(range.substring(18, 20));

@@ -74,10 +74,12 @@ export function parseCourses(courses) {
         let days;
         let time;
         try {
+            // section details text: [location] | [days] | [time] | [date range]
+            // location may or may not be present
             const detailsSpan = course.querySelector("span.WFQV.WBQV");
             const detailsTextArr = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent.split("|");
-            days = detailsTextArr[1].trim();
-            time = detailsTextArr[2].trim();
+            days = detailsTextArr[detailsTextArr.length - 3].trim();
+            time = detailsTextArr[detailsTextArr.length - 2].trim();
             
             /*
             term logic
@@ -87,7 +89,7 @@ export function parseCourses(courses) {
 
             2025-01-06 - 2025-02-12
             */
-            const range = detailsTextArr[3].trim();
+            const range = detailsTextArr[detailsTextArr.length - 1].trim();
             function getTerm(month) {
                 if (1 <= month && month <= 4) return "W2";
                 if (5 <= month && month <= 6) return "S1";
