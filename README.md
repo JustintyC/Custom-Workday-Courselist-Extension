@@ -8,6 +8,9 @@
 ![image](readme_images/workday_before.png)
 
 # Installation
+- [Chrome web store](https://chromewebstore.google.com/detail/better-workday-courselist/ldjigmjmlemmimiimckddfmkpgppkddh)
+
+And if you're a nerd:
 1. Download the code as a ZIP file
 2. Unzip the file
 3. Go to chrome://extensions/ and turn on developer mode on the top right hand corner
