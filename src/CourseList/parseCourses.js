@@ -2,7 +2,7 @@
 export function parseCourses(courses) {
     let out = [];
     /*
-                code (& name)
+                code (& name & credits)
                 /  \
               term  term
              /    \ 
@@ -13,6 +13,7 @@ export function parseCourses(courses) {
     {
         code: ...
         name: ...
+        credits: ...
         W1: {
             Lecture: [ ... ]
             Lab: [ ... ]        
@@ -40,6 +41,7 @@ export function parseCourses(courses) {
         - delivery mode (e.g. lecture, lab)
         - section type (e.g. Open, Waitlist, etc)
         - learning type (e.g. in person, hybrid, etc)
+        - credits
 
         from section details:
         - days (e.g. Mon Wed Fri)
@@ -68,6 +70,7 @@ export function parseCourses(courses) {
         const deliveryMode = modeTextArr[0].trim().replace(" ", "");            // delivery mode
         const sectionType = modeTextArr[1].trim();                              // section type
         const learningType = modeTextArr[2].replace("Learning", "").trim();     // learning type
+        const credits = modeTextArr[3].trim();
 
         // section details
         let term;
@@ -128,6 +131,7 @@ export function parseCourses(courses) {
             "deliveryMode": deliveryMode,
             "sectionType": sectionType,
             "learningType": learningType,
+            "credits": credits,
             "term": term,
             "days": days,
             "time": time,
@@ -137,7 +141,7 @@ export function parseCourses(courses) {
 
         // insert course into output
         if (out.length == 0 || out[out.length - 1]["code"] != courseCode) {
-            out.push({ code: courseCode, name: courseName });
+            out.push({ code: courseCode, name: courseName, credits: credits});
         }
         let courseJson = out[out.length - 1];
 

@@ -38,13 +38,13 @@ function Course(_ref2) {
     _useState2 = _slicedToArray(_useState, 2),
     visible = _useState2[0],
     setVisibility = _useState2[1];
-  var terms = Object.keys(courseJson).slice(2);
+  var terms = Object.keys(courseJson).slice(3);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     className: "CodeButton",
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(courseJson["code"], " - ").concat(courseJson["name"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+  }, "".concat(courseJson["code"], " - ").concat(courseJson["name"], " | ").concat(courseJson["credits"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "arrow"
   }, visible ? "⯆" : "⯇")), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -117,10 +117,11 @@ const section = {
     "deliveryMode": deliveryMode,
     "sectionType": sectionType,
     "learningType": learningType,
+    "credits": credits,
     "term": term,
     "days": days,
     "time": time,
-    "url": url            
+    "url": url
 }
 */
 
@@ -274,7 +275,7 @@ __webpack_require__.r(__webpack_exports__);
 function parseCourses(courses) {
   var out = [];
   /*
-              code (& name)
+              code (& name & credits)
               /  \
             term  term
            /    \ 
@@ -284,6 +285,7 @@ function parseCourses(courses) {
     {
       code: ...
       name: ...
+      credits: ...
       W1: {
           Lecture: [ ... ]
           Lab: [ ... ]        
@@ -307,6 +309,7 @@ function parseCourses(courses) {
     - delivery mode (e.g. lecture, lab)
     - section type (e.g. Open, Waitlist, etc)
     - learning type (e.g. in person, hybrid, etc)
+    - credits
       from section details:
     - days (e.g. Mon Wed Fri)
     - start & end time (e.g. 10:00 a.m. - 11:00 a.m.)
@@ -332,6 +335,7 @@ function parseCourses(courses) {
     var deliveryMode = modeTextArr[0].trim().replace(" ", ""); // delivery mode
     var sectionType = modeTextArr[1].trim(); // section type
     var learningType = modeTextArr[2].replace("Learning", "").trim(); // learning type
+    var credits = modeTextArr[3].trim();
 
     // section details
     var term;
@@ -387,6 +391,7 @@ function parseCourses(courses) {
       "deliveryMode": deliveryMode,
       "sectionType": sectionType,
       "learningType": learningType,
+      "credits": credits,
       "term": term,
       "days": days,
       "time": time,
@@ -397,7 +402,8 @@ function parseCourses(courses) {
     if (out.length == 0 || out[out.length - 1]["code"] != courseCode) {
       out.push({
         code: courseCode,
-        name: courseName
+        name: courseName,
+        credits: credits
       });
     }
     var courseJson = out[out.length - 1];

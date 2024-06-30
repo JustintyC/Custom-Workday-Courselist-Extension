@@ -11,12 +11,12 @@ export default function CourseList({ coursesArr }) {
 function Course({ courseJson }) {
     const [visible, setVisibility] = useState(false);
 
-    const terms = Object.keys(courseJson).slice(2);
+    const terms = Object.keys(courseJson).slice(3);
 
     return (
         <>
             <button className="CodeButton" onClick={() => setVisibility(!visible)}>
-                {`${courseJson["code"]} - ${courseJson["name"]}`}
+                {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
                 <span className="arrow">{visible? "⯆" : "⯇"}</span>
             </button>
 
@@ -86,10 +86,11 @@ const section = {
     "deliveryMode": deliveryMode,
     "sectionType": sectionType,
     "learningType": learningType,
+    "credits": credits,
     "term": term,
     "days": days,
     "time": time,
-    "url": url            
+    "url": url
 }
 */
 
