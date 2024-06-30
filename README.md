@@ -10,13 +10,6 @@
 # Installation
 - [Chrome web store](https://chromewebstore.google.com/detail/better-workday-courselist/ldjigmjmlemmimiimckddfmkpgppkddh)
 
-And if you're a nerd:
-1. Download the code as a ZIP file
-2. Unzip the file
-3. Go to chrome://extensions/ and turn on developer mode on the top right hand corner
-4. Click "Load unpacked" on the top left hand corner
-5. Select the unzipped file from before
-
 # Known issues
 - Workday only renders 50 sections at once, and the extension can only see the sections Workday has rendered. If the table is incomplete, the user must scroll to the bottom of the page to force workday to fetch and render more sections.
 - Multi-term courses are not displayed correctly since Workday does not properly indicate which courses span multiple terms without having to view course details.
