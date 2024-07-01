@@ -9,6 +9,7 @@
 
 # Installation
 - [Chrome web store](https://chromewebstore.google.com/detail/better-workday-courselist/ldjigmjmlemmimiimckddfmkpgppkddh)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/better-ubc-workday-courselist/)
 
 # Known issues
 - Workday only renders 50 sections at once, and the extension can only see the sections Workday has rendered. If the table is incomplete, the user must scroll to the bottom of the page to force workday to fetch and render more sections.
