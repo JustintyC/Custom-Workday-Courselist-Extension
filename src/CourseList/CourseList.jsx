@@ -17,7 +17,7 @@ function Course({ courseJson }) {
         <>
             <button className="CodeButton" onClick={() => setVisibility(!visible)}>
                 {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
-                <span className="arrow">{visible? "⯆" : "⯇"}</span>
+                <span className="arrow">{visible? "▼" : "◀"}</span>
             </button>
 
             {visible && (
@@ -41,7 +41,7 @@ function Term({ termJson, term }) {
     return (
         <>
             <button className="TermButton" onClick={() => setVisibility(!visible)}>
-                {`${visible? "⯆" : "⯈"} ${term}`}
+                {`${visible? "▼" : "▶"} ${term}`}
             </button>
 
             {visible && (
@@ -63,7 +63,7 @@ function Mode({ modeArr, mode }) {
     return (
         <>
             <button className="ModeButton" onClick={() => setVisibility(!visible)}>
-                {`${visible? "⯆" : "⯈"} ${mode}`}
+                {`${visible? "▼" : "▶"} ${mode}`}
             </button>
 
             {visible && (

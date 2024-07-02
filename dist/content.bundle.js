@@ -46,7 +46,7 @@ function Course(_ref2) {
     }
   }, "".concat(courseJson["code"], " - ").concat(courseJson["name"], " | ").concat(courseJson["credits"]), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "arrow"
-  }, visible ? "⯆" : "⯇")), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, visible ? "▼" : "◀")), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: "block"
     }
@@ -71,7 +71,7 @@ function Term(_ref3) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(visible ? "⯆" : "⯈", " ").concat(term)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "".concat(visible ? "▼" : "▶", " ").concat(term)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: "block"
     }
@@ -95,7 +95,7 @@ function Mode(_ref4) {
     onClick: function onClick() {
       return setVisibility(!visible);
     }
-  }, "".concat(visible ? "⯆" : "⯈", " ").concat(mode)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+  }, "".concat(visible ? "▼" : "▶", " ").concat(mode)), visible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
     className: "SectionsTable",
     style: {
       display: "table"
