@@ -40,8 +40,6 @@ function handleDOMChanges() {
 
             reconnectObserver();            
         }
-    } else {
-        console.log("Course list container not found");
     }
 
     // removes the expand button

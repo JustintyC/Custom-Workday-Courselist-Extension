@@ -53,10 +53,11 @@ export function parseCourses(courses) {
 
         */
 
+        const promptOptions = course.querySelectorAll('div[data-automation-id="promptOption"]');
+
         // title
-        const titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
-        const nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
-        const title = nameDiv.textContent;
+        const titleDiv = promptOptions[0];
+        const title = titleDiv.textContent;
         const subject = title.split(" ")[0];
         const numbers = title.split(" ")[1].split("-")[0];
         const courseCode = `${subject} ${numbers}`;             // course code
@@ -65,9 +66,9 @@ export function parseCourses(courses) {
 
         // middle row
         // mode
-        const modeSpan = course.querySelector("span.gwt-InlineLabel.WPVF.WOUF");
+        const modeSpan = course.querySelector('span[data-automation-id="compositeSubHeaderOne"]');;
         const modeTextArr = modeSpan.textContent.split("|");
-        const deliveryMode = modeTextArr[0].trim().replace(" ", "");            // delivery mode
+        const deliveryMode = modeTextArr[0].trim();                             // delivery mode
         const sectionType = modeTextArr[1].trim();                              // section type
         const learningType = modeTextArr[2].replace("Learning", "").trim();     // learning type
         const credits = modeTextArr[3].trim();
@@ -79,8 +80,7 @@ export function parseCourses(courses) {
         try {
             // section details text: [location] | [days] | [time] | [date range]
             // location may or may not be present
-            const detailsSpan = course.querySelector("span.WFQV.WBQV");
-            const detailsTextArr = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent.split("|");
+            const detailsTextArr = promptOptions[1].textContent.split("|");
             days = detailsTextArr[detailsTextArr.length - 3].trim();
             time = detailsTextArr[detailsTextArr.length - 2].trim();
             

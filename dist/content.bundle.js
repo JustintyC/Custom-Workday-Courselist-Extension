@@ -318,10 +318,11 @@ function parseCourses(courses) {
     - url for the section
       */
 
+    var promptOptions = course.querySelectorAll('div[data-automation-id="promptOption"]');
+
     // title
-    var titleDiv = course.querySelector("div.WH1X.WP-X.WF5.WI2X.WG2X.WCVF.WOUF");
-    var nameDiv = titleDiv.querySelector("div.gwt-Label.WLNO.WEMO");
-    var title = nameDiv.textContent;
+    var titleDiv = promptOptions[0];
+    var title = titleDiv.textContent;
     var subject = title.split(" ")[0];
     var numbers = title.split(" ")[1].split("-")[0];
     var courseCode = "".concat(subject, " ").concat(numbers); // course code
@@ -330,9 +331,10 @@ function parseCourses(courses) {
 
     // middle row
     // mode
-    var modeSpan = course.querySelector("span.gwt-InlineLabel.WPVF.WOUF");
+    var modeSpan = course.querySelector('span[data-automation-id="compositeSubHeaderOne"]');
+    ;
     var modeTextArr = modeSpan.textContent.split("|");
-    var deliveryMode = modeTextArr[0].trim().replace(" ", ""); // delivery mode
+    var deliveryMode = modeTextArr[0].trim(); // delivery mode
     var sectionType = modeTextArr[1].trim(); // section type
     var learningType = modeTextArr[2].replace("Learning", "").trim(); // learning type
     var credits = modeTextArr[3].trim();
@@ -350,8 +352,7 @@ function parseCourses(courses) {
       };
       // section details text: [location] | [days] | [time] | [date range]
       // location may or may not be present
-      var detailsSpan = course.querySelector("span.WFQV.WBQV");
-      var detailsTextArr = detailsSpan.querySelector("div.gwt-Label.WLNO.WEMO").textContent.split("|");
+      var detailsTextArr = promptOptions[1].textContent.split("|");
       days = detailsTextArr[detailsTextArr.length - 3].trim();
       time = detailsTextArr[detailsTextArr.length - 2].trim();
 
@@ -34703,8 +34704,6 @@ function handleDOMChanges() {
       root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CourseList_CourselistContainer__WEBPACK_IMPORTED_MODULE_2__["default"], null));
       reconnectObserver();
     }
-  } else {
-    console.log("Course list container not found");
   }
 
   // removes the expand button
