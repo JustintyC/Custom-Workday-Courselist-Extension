@@ -1,3 +1,6 @@
+## July 6 update:
+The webstore version (1.0.1) is broken since Workday updated their website. 1.0.2, which fixes this issue, is currently being approved by the Chrome Web Store. Chrome's manual installation version and Firefox's installation zip file currently work.
+
 ### Reformats UBC Workday's course search list to one similar to UBC's old SSC layout.
 
 ## After:
