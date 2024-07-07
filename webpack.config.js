@@ -24,6 +24,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  mode: 'development', // Change to 'production' for production builds
+  mode: 'production', // Change to 'production' for production builds
   devtool: 'cheap-module-source-map',
 };

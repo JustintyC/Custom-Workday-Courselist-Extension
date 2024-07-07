@@ -3,6 +3,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import CourseListContainer from "./CourseList/CourselistContainer";
+import SettingsButton from "./Settings/SettingsButton";
 
 console.log("contents.js loaded");
 
@@ -40,13 +41,21 @@ function handleDOMChanges() {
 
             reconnectObserver();            
         }
-    } else {
-        console.log("Course list container not found");
     }
 
     // removes the expand button
     const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
-    if (expandButton) expandButton.style.display = "none";
+    if (expandButton && expandButton.style.display != "none") expandButton.style.display = "none";
+
+    // insert the settings button into the top right bar thing if it's not there yet
+    const topRightBar = document.querySelector(".wdappchrome-j");
+    if (topRightBar && topRightBar.firstElementChild.id != "BetterCourselistSettings") {
+        const injection = document.createElement("div");
+        injection.id = "BetterCourselistSettings";
+        topRightBar.prepend(injection);
+        const root = createRoot(injection);
+        root.render(<SettingsButton/>);
+    }
 }
 
 function disconnectObserver() {

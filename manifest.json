@@ -2,12 +2,12 @@
   "manifest_version": 3,
   "name": "Better UBC Workday Courselist",
   "description": "Reformats UBC Workday's course search list.",
-  "version": "1.0",
+  "version": "1.0.1",
   "icons": {
-    "16": "src/Images/icon16.png",
-    "32": "src/Images/icon32.png",
-    "48": "src/Images/icon48.png",
-    "128": "src/Images/icon128.png"
+    "16": "icons/Images/icon16.png",
+    "32": "icons/Images/icon32.png",
+    "48": "icons/Images/icon48.png",
+    "128": "icons/Images/icon128.png"
   },
   "permissions": [
   ],
