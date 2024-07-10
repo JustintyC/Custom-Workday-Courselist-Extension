@@ -43,19 +43,11 @@ function handleDOMChanges() {
         }
     }
 
-    // removes the expand button
+    // remove the expand button (for some reason deleting it breaks the website so style=none)
     const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
     if (expandButton && expandButton.style.display != "none") expandButton.style.display = "none";
 
-    // insert the settings button into the top right bar thing if it's not there yet
-    const topRightBar = document.querySelector(".wdappchrome-j");
-    if (topRightBar && topRightBar.firstElementChild.id != "BetterCourselistSettings") {
-        const injection = document.createElement("div");
-        injection.id = "BetterCourselistSettings";
-        topRightBar.prepend(injection);
-        const root = createRoot(injection);
-        root.render(<SettingsButton/>);
-    }
+
 }
 
 function disconnectObserver() {

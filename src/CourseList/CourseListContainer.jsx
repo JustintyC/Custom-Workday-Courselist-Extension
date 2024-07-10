@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
 import CourseList from "./CourseList";
+import SettingsMenu from '../Settings/SettingsMenu.jsx';
 import "./courseListStyles.css"
 
+// contains the setting menu and new course list
 export default function CourseListContainer() {
 
   const [ courses, setCourses ] = useState([]);
@@ -71,6 +73,7 @@ export default function CourseListContainer() {
 
   return (
     <>
+      <SettingsMenu/>
       <CourseList coursesArr={parsedCourses}/>
     </>
   )
