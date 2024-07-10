@@ -1,3 +1,5 @@
+# Notice: Versions 1.0.1 and below no longer work. Please update to versions 1.0.2 and above.
+
 ### Reformats UBC Workday's course search list to one similar to UBC's old SSC layout.
 
 ## After:
