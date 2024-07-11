@@ -23,6 +23,7 @@ export default function CourseListContainer() {
     });
 
     function updateCourselist() {
+      console.log("updateCourselist called");
       const courseListContainer = document.querySelector('div.WB-N.WFYN');
       if (courseListContainer) {
 
@@ -56,7 +57,7 @@ export default function CourseListContainer() {
     updateCourselist();
     
     // start observing DOM
-    observer.observe(document.body, {
+    observer.observe(document.querySelector("div.WB-N.WFYN"), {
         childList: true,
         subtree: true
     });
@@ -64,7 +65,7 @@ export default function CourseListContainer() {
     return (() => {
       observer.disconnect();
     });
-  }, [courses]);
+  }, []);
 
 
   useEffect(() => {
@@ -73,8 +74,8 @@ export default function CourseListContainer() {
 
   return (
     <>
-      <SettingsMenu/>
       <CourseList coursesArr={parsedCourses}/>
     </>
   )
 }
+

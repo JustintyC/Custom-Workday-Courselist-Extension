@@ -3,7 +3,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import CourseListContainer from "./CourseList/CourselistContainer";
-import SettingsButton from "./Settings/SettingsButton";
+import SettingsMenu from "./Settings/SettingsMenu";
 
 console.log("contents.js loaded");
 
@@ -23,6 +23,7 @@ function handleDOMChanges() {
         // inject react element if it"s not there yet
         const check = document.getElementById("react-root");
         if (!check) {
+            console.log("injecting new list");
             // disconnect observer to prevent an infinite loop while injecting element
             disconnectObserver();
 
@@ -38,8 +39,19 @@ function handleDOMChanges() {
 
             // render custom container in root
             root.render(<CourseListContainer/>);
+            
 
-            reconnectObserver();            
+            // second root for settings menu
+            const injection2 = document.createElement("div");
+            injection2.id = "settings-root";
+            target.insertBefore(injection2, target.childNodes[1]);
+
+            const container2 = document.getElementById("settings-root");
+            const root2 = createRoot(container2);
+
+            root2.render(<SettingsMenu/>);
+
+            reconnectObserver();
         }
     }
 
