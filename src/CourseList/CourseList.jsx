@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function CourseList({ coursesArr }) {
@@ -36,6 +36,17 @@ function Course({ courseJson }) {
 function Term({ termJson, term }) {
     const [visible, setVisibility] = useState(false);
 
+    useEffect(() => {
+        // check localstorage if user has autoOpenTerm turned on and and set visible state to that
+        const autoOpen = localStorage.getItem("autoOpenTerm") === "true";
+        setVisibility(autoOpen);
+
+        // set up event listener for setting changes
+        window.addEventListener("autoOpenTerm", (e) => {
+            setVisibility(e.detail.enabled);
+        });
+    }, []);
+
     const modes = Object.keys(termJson);
 
     return (
@@ -59,6 +70,17 @@ function Term({ termJson, term }) {
 
 function Mode({ modeArr, mode }) {
     const [visible, setVisibility] = useState(false);
+
+    useEffect(() => {
+        // check localstorage if user has autoOpenMode turned on and and set visible state to that
+        const autoOpen = localStorage.getItem("autoOpenMode") === "true";
+        setVisibility(autoOpen);
+
+        // set up event listener for setting changes
+        window.addEventListener("autoOpenMode", (e) => {
+            setVisibility(e.detail.enabled);
+        });
+    }, []);
 
     return (
         <>

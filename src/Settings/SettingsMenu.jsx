@@ -11,10 +11,13 @@ export default function SettingsMenu() {
     settings["autoOpenTerm"] = [ autoOpenTerm, setAutoOpenTerm ];
     const [ autoOpenMode, setAutoOpenMode ] = useState(false);
     settings["autoOpenMode"] = [ autoOpenMode, setAutoOpenMode ];
+    const [ displayOriginalList, setDisplayOriginalList ] = useState(false);
+    settings["displayOriginalList"] = [ displayOriginalList, setDisplayOriginalList ];
 
     useEffect(() => {
         setAutoOpenTerm(getStoredSetting("autoOpenTerm", false));
         setAutoOpenMode(getStoredSetting("autoOpenMode", false));
+        setDisplayOriginalList(getStoredSetting("displayOriginalList", false));
     }, []);
 
 
@@ -43,7 +46,7 @@ export default function SettingsMenu() {
                         settingKeys.map((key) => {
                             return <Setting key={uuidv4()} setting={key} value={settings[key]}/>
                         })
-                    }    
+                    }
                 </tbody>
             </table>
         )}
@@ -58,8 +61,17 @@ function Setting({ setting, value }) {
         setState((prevState) => {
             const newState = !prevState;
             localStorage.setItem(setting, newState);
+
+            // signal components relying on this setting
+            const event = new CustomEvent(setting, {
+                detail: { enabled: newState }
+            });
+            window.dispatchEvent(event); 
+            
             return newState;
         });
+
+
     }
   
     return (
@@ -80,7 +92,6 @@ function getStoredSetting(key, defaultValue) {
       localStorage.setItem(key, defaultValue);
       storedValue = defaultValue;
     }
-    console.log(`${key}: ${storedValue}`);
     
     // weird bool and string stuff idk js is stupid
     if (storedValue === "true") storedValue = true;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
 import CourseList from "./CourseList";
-import SettingsMenu from '../Settings/SettingsMenu.jsx';
 import "./courseListStyles.css"
 
 // contains the setting menu and new course list
@@ -9,6 +8,7 @@ export default function CourseListContainer() {
 
   const [ courses, setCourses ] = useState([]);
   const [ parsedCourses, setParsedCourses ] = useState([]);
+  const [ displayOriginalList, setDisplayOriginalList ] = useState([false]);
 
   // on mount: get courses loaded by current page, set observer to start observing 
   // for DOM changes and update courselist if changes are found
@@ -22,8 +22,17 @@ export default function CourseListContainer() {
       }
     });
 
+    // check localstorage if user has displayOriginalList turned on and and set state to that
+    const displayOriginal = localStorage.getItem("displayOriginalList") === "true";
+    setDisplayOriginalList(displayOriginal);
+
+    // set up event listener for setting changes
+    window.addEventListener("displayOriginalList", (e) => {
+      setDisplayOriginalList(e.detail.enabled);
+    });
+
+
     function updateCourselist() {
-      console.log("updateCourselist called");
       const courseListContainer = document.querySelector('div.WB-N.WFYN');
       if (courseListContainer) {
 
@@ -46,7 +55,6 @@ export default function CourseListContainer() {
               }
             }
 
-            courseList.style.display = "none"; // comment this line out to show original course list
         } catch (error) {
             console.log(error);
         }
@@ -67,14 +75,38 @@ export default function CourseListContainer() {
     });
   }, []);
 
-
   useEffect(() => {
     setParsedCourses(parseCourses(courses));
   }, [courses]);
 
+  // enable/disable original list when user changes displayOriginalList setting
+  useEffect(() => {
+    const courseListContainer = document.querySelector('div.WB-N.WFYN');
+    let oldCourseList;
+    if (courseListContainer ) oldCourseList = courseListContainer.querySelector("ul");
+    else return;
+
+    const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
+    if (!displayOriginalList) {
+      oldCourseList.style.display = "none";
+      if (expandButton) expandButton.style.display = "none";
+
+    } else {
+      oldCourseList.style.display = "";
+      if (expandButton) {
+        expandButton.style.display = "";
+        expandButton.style.position = "absolute";
+        expandButton.style.right = "100px";
+        expandButton.style.top = "0px";
+      }
+      
+      
+    }
+  }, [displayOriginalList])
+
   return (
     <>
-      <CourseList coursesArr={parsedCourses}/>
+      { !displayOriginalList && <CourseList coursesArr={parsedCourses}/> }
     </>
   )
 }

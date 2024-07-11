@@ -23,7 +23,6 @@ function handleDOMChanges() {
         // inject react element if it"s not there yet
         const check = document.getElementById("react-root");
         if (!check) {
-            console.log("injecting new list");
             // disconnect observer to prevent an infinite loop while injecting element
             disconnectObserver();
 
@@ -39,7 +38,7 @@ function handleDOMChanges() {
 
             // render custom container in root
             root.render(<CourseListContainer/>);
-            
+
 
             // second root for settings menu
             const injection2 = document.createElement("div");
@@ -54,12 +53,6 @@ function handleDOMChanges() {
             reconnectObserver();
         }
     }
-
-    // remove the expand button (for some reason deleting it breaks the website so style=none)
-    const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
-    if (expandButton && expandButton.style.display != "none") expandButton.style.display = "none";
-
-
 }
 
 function disconnectObserver() {
