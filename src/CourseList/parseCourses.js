@@ -1,3 +1,5 @@
+import { workdayDomComponents } from "../utils";
+
 // returns an array of jsons for each course
 export function parseCourses(courses) {
     let out = [];
@@ -27,7 +29,7 @@ export function parseCourses(courses) {
     Assumptions: workday's courselist is ordered
     */
 
-
+    console.log(`parseCourses: courses.length = ${courses.length}`);
     courses.forEach((course) => {
         /*
         from each course HTML element, retrieve:
@@ -42,6 +44,8 @@ export function parseCourses(courses) {
         - section type (e.g. Open, Waitlist, etc)
         - learning type (e.g. in person, hybrid, etc)
         - credits
+        - enrolled 
+        - waitlist capacity (if available)
 
         from section details:
         - days (e.g. Mon Wed Fri)
@@ -71,7 +75,17 @@ export function parseCourses(courses) {
         const deliveryMode = modeTextArr[0].trim();                             // delivery mode
         const sectionType = modeTextArr[1].trim();                              // section type
         const learningType = modeTextArr[2].replace("Learning", "").trim();     // learning type
-        const credits = modeTextArr[3].trim();
+        const credits = modeTextArr[3].trim();                                  // credits
+        const enrolled = modeTextArr[4].replace(" Enrolled/Capacity:", "").trim();
+        let waitlist;
+        try {
+            waitlist = modeSpan.textContent.split("Waitlisted/Waitlist Capacity:")[1].trim();
+        } catch (error) {
+            waitlist = null;
+        };
+        
+        
+
 
         // section details
         let term;
@@ -117,7 +131,7 @@ export function parseCourses(courses) {
         }
 
         // URL
-        const urlDiv = course.querySelector("div.WKNO.WEMO.WOMO");
+        const urlDiv = course.querySelector(workdayDomComponents["urlDiv"]);
         const dataAutomationId = urlDiv.getAttribute("data-automation-id");
         const daIdFirstHalf  = dataAutomationId.split("_")[1].split("$")[0];
         const daIdSecondHalf = dataAutomationId.split("_")[1].split("$")[1];
@@ -132,6 +146,8 @@ export function parseCourses(courses) {
             "sectionType": sectionType,
             "learningType": learningType,
             "credits": credits,
+            "enrolled": enrolled,
+            "waitlist": waitlist,
             "term": term,
             "days": days,
             "time": time,

@@ -3,6 +3,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import CourseListContainer from "./CourseList/CourselistContainer";
+import SettingsMenu from "./Settings/SettingsMenu";
+import { workdayDomComponents}  from "./utils.js";
 
 console.log("contents.js loaded");
 
@@ -17,7 +19,7 @@ const observer = new MutationObserver((mutationsList, observer) => {
 
 function handleDOMChanges() {
     // find the div that contains the course list
-    const courseListContainer = document.querySelector("div.WB-N.WFYN");
+    const courseListContainer = document.querySelector(workdayDomComponents["courseListContainer"]);
     if (courseListContainer) {
         // inject react element if it"s not there yet
         const check = document.getElementById("react-root");
@@ -25,10 +27,10 @@ function handleDOMChanges() {
             // disconnect observer to prevent an infinite loop while injecting element
             disconnectObserver();
 
-            // create a new element before the first child of the container
+            // create a new element before the first child of the course list's parent
             const injection = document.createElement("div");
             injection.id = "react-root";
-            const target = document.querySelector("div.WEYN.WJYN.WF5");
+            const target = document.querySelector(workdayDomComponents["courseListContainerParent"]);
             target.insertBefore(injection, target.childNodes[1]);
 
             // create a react root at the new element
@@ -38,13 +40,20 @@ function handleDOMChanges() {
             // render custom container in root
             root.render(<CourseListContainer/>);
 
-            reconnectObserver();            
+
+            // second root for settings menu
+            const injection2 = document.createElement("div");
+            injection2.id = "settings-root";
+            target.insertBefore(injection2, target.childNodes[1]);
+
+            const container2 = document.getElementById("settings-root");
+            const root2 = createRoot(container2);
+
+            root2.render(<SettingsMenu/>);
+
+            reconnectObserver();
         }
     }
-
-    // removes the expand button
-    const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
-    if (expandButton) expandButton.style.display = "none";
 }
 
 function disconnectObserver() {

@@ -1,0 +1,31 @@
+#settingsButton {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    background-color: #FFFFFF;
+    color: #333333;
+    border: 0.5px solid #333333;
+    border-radius: 5px;
+    font: 14px Arial, sans-serif;
+    font-weight: bold;
+}
+
+#settingsButton:hover {
+    background-color: #f1f1f1; 
+}
+
+#settingsMenu {
+    display: "table";
+    background-color: #EEF1F2;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 0.5px solid #CFD4D7;
+    border-radius: 10px;
+    border-collapse: separate;
+    overflow: hidden;
+}
+
+.optionTd {
+    font: 14px Arial, sans-serif;
+}
