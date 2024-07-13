@@ -1,10 +1,11 @@
-# Notice: Versions 1.0.1 and below no longer work. Please update to versions 1.0.2 and above.
+# Notice: Versions 1.0.2 and below no longer work. Please update to versions 1.1 and above.
+
+### Current repository version: 1.1
 
 ### Reformats UBC Workday's course search list to one similar to UBC's old SSC layout.
 
 ## After:
 ![image](readme_images/workday_after.png)
-![image](readme_images/expanded_course.png)
 
 ## Before:
 ![image](readme_images/workday_before.png)
