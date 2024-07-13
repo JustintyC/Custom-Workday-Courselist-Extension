@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
 import CourseList from "./CourseList";
 import "./courseListStyles.css"
+import { workdayDomComponents } from "../utils.js";
 
 // contains the setting menu and new course list
 export default function CourseListContainer() {
@@ -9,6 +10,8 @@ export default function CourseListContainer() {
   const [ courses, setCourses ] = useState([]);
   const [ parsedCourses, setParsedCourses ] = useState([]);
   const [ displayOriginalList, setDisplayOriginalList ] = useState([false]);
+
+  const courseListContainer = document.querySelector(workdayDomComponents["courseListContainer"]);
 
   // on mount: get courses loaded by current page, set observer to start observing 
   // for DOM changes and update courselist if changes are found
@@ -33,15 +36,14 @@ export default function CourseListContainer() {
 
 
     function updateCourselist() {
-      const courseListContainer = document.querySelector('div.WB-N.WFYN');
       if (courseListContainer) {
 
         let foundCourses = null;
         // handle the actual list itself
         try {
             const courseList = courseListContainer.querySelector("ul");
-            foundCourses = courseList.querySelectorAll("li.WLUF.WC0N.WF5.WCWF");
-            // console.log(foundCourses.length);
+            foundCourses = courseList.querySelectorAll(workdayDomComponents["courseListItem"]);
+            console.log(`found courses: ${foundCourses.length}`);
 
             // check if courses really changed before updating courses state
             if (foundCourses.length !== courses.length) {
@@ -58,30 +60,37 @@ export default function CourseListContainer() {
         } catch (error) {
             console.log(error);
         }
-      }       
+      } else {
+        console.log("courseListContainer not found (CourseListContainer.jsx)");
+      }
     }
 
     // initial fetch courses call to fill new courselist on mount
     updateCourselist();
     
     // start observing DOM
-    observer.observe(document.querySelector("div.WB-N.WFYN"), {
+    observer.observe(courseListContainer, {
         childList: true,
         subtree: true
     });
 
     return (() => {
       observer.disconnect();
+      window.removeEventListener("displayOriginalList", (e) => {
+        setDisplayOriginalList(e.detail.enabled);
+      });
     });
   }, []);
 
   useEffect(() => {
-    setParsedCourses(parseCourses(courses));
+    setParsedCourses(() => {
+      const parsed = parseCourses(courses);
+      return parsed;
+  });
   }, [courses]);
 
   // enable/disable original list when user changes displayOriginalList setting
   useEffect(() => {
-    const courseListContainer = document.querySelector('div.WB-N.WFYN');
     let oldCourseList;
     if (courseListContainer ) oldCourseList = courseListContainer.querySelector("ul");
     else return;

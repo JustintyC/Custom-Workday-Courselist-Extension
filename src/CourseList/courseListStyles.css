@@ -1,4 +1,4 @@
-.CodeButton, .TermButton, .ModeButton, .SectionChildTd_long, .SectionChildTd_short {
+.CodeButton, .TermButton, .ModeButton, .SectionChildTd {
     font: 14px Arial, sans-serif;
 }
 
@@ -11,6 +11,7 @@
     position: relative; 
     border: none;
     border-top: none;
+    cursor: pointer;
 }
 
 .CodeButton {
@@ -64,16 +65,18 @@
     width: 100%;
 }
 
-.SectionChildTd_long {
-    width: 25%;
+.SectionChildTd {
     text-align: center;
     padding: 10px;
+    margin: auto;
 }
 
-.SectionChildTd_short {
-    width: 16.67%;
-    text-align: center;
-    padding: 10px;
+.td_long {
+    width: 25%;
+}
+
+.td_short {
+    width: 12.5%;
 }
 
 .SectionChild_courseNameCell {
@@ -92,4 +95,9 @@
 
 .SectionChild:nth-child(even) {
     background-color: #ffffff;
+}
+
+.enrollmentColourDiv {
+    border: 0.5px solid #4A4A4A;
+    border-radius: 5px;
 }
