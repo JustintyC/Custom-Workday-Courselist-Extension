@@ -48,6 +48,8 @@ export function parseCourses(courses) {
         - waitlist capacity (if available)
 
         from section details:
+        - location (if available)
+        - location url (if available)
         - days (e.g. Mon Wed Fri)
         - start & end time (e.g. 10:00 a.m. - 11:00 a.m.)
         - term from start & end date (e.g. 2024-09-03 - 2024-12-06 -> W1)
@@ -88,13 +90,22 @@ export function parseCourses(courses) {
 
 
         // section details
+        let location = null;
+        let locationURL = null;
         let term;
         let days;
         let time;
         try {
             // section details text: [location] | [days] | [time] | [date range]
-            // location may or may not be present
+            // location may or may not be present            
+            
             const detailsTextArr = promptOptions[1].textContent.split("|");
+            if (detailsTextArr.length == 4) { // location present
+                const fullLocation = detailsTextArr[0];
+                location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ")[2]}`;
+                const locationArr = location.split(" ");
+                locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`;
+            }
             days = detailsTextArr[detailsTextArr.length - 3].trim();
             time = detailsTextArr[detailsTextArr.length - 2].trim();
             
@@ -148,6 +159,8 @@ export function parseCourses(courses) {
             "credits": credits,
             "enrolled": enrolled,
             "waitlist": waitlist,
+            "location": location,
+            "locationURL": locationURL,
             "term": term,
             "days": days,
             "time": time,

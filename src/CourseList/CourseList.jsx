@@ -123,6 +123,8 @@ const section = {
     "credits": credits,
     "enrolled": enrolled,
     "waitlist": waitlist,
+    "location": location,
+    "locationURL": locationURL,
     "term": term,
     "days": days,
     "time": time,
@@ -191,7 +193,7 @@ function Section({ section }) {
                     </div>
                 </div>
             </td>
-            <td className="SectionChildTd td_long">
+            <td className="SectionChildTd td_med">
                 <div
                     className={colourIndicators ? "enrollmentColourDiv" : ""}
                     style={{ backgroundColor: colourIndicators ? enrollmentColour(section.enrolled, section.waitlist) : "" }}
@@ -207,7 +209,14 @@ function Section({ section }) {
                     )}
                 </div>
             </td>
-            <td className="SectionChildTd td_short">{section.learningType}</td>
+            <td className="SectionChildTd td_med">
+                <span>{section.learningType}</span><br/>
+                <span>
+                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
+                        {section.location}
+                    </a>
+                </span>
+            </td>
             <td className="SectionChildTd td_short">{section.days}</td>
             <td className="SectionChildTd td_long">{section.time}</td>
         </tr>

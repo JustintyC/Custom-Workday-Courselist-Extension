@@ -69,14 +69,19 @@
     text-align: center;
     padding: 10px;
     margin: auto;
+    vertical-align: middle;
 }
 
 .td_long {
     width: 25%;
 }
 
+.td_med {
+    width: 19%;
+}
+
 .td_short {
-    width: 12.5%;
+    width: 12%;
 }
 
 .SectionChild_courseNameCell {
