@@ -1,5 +1,3 @@
-import { workdayDomComponents } from "../utils";
-
 // returns an array of jsons for each course
 export function parseCourses(courses) {
     let out = [];
@@ -29,7 +27,7 @@ export function parseCourses(courses) {
     Assumptions: workday's courselist is ordered
     */
 
-    console.log(`parseCourses: courses.length = ${courses.length}`);
+    // console.log(`parseCourses: courses.length = ${courses.length}`);
     courses.forEach((course) => {
         /*
         from each course HTML element, retrieve:
@@ -142,7 +140,7 @@ export function parseCourses(courses) {
         }
 
         // URL
-        const urlDiv = course.querySelector(workdayDomComponents["urlDiv"]);
+        const urlDiv = promptOptions[0].parentElement;
         const dataAutomationId = urlDiv.getAttribute("data-automation-id");
         const daIdFirstHalf  = dataAutomationId.split("_")[1].split("$")[0];
         const daIdSecondHalf = dataAutomationId.split("_")[1].split("$")[1];

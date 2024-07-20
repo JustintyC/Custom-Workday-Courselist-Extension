@@ -5,10 +5,10 @@ export default function SettingsButton({settingsMenuState}) {
   const [settingsOpen, setSettingsOpen] = settingsMenuState;
 
   return (
-    <div>
-      <button id="settingsButton" onClick={() => setSettingsOpen(!settingsOpen)}>
-        <h1>List Settings</h1>
-      </button>
-    </div>
+    <button id="settingsButton" onClick={() => setSettingsOpen((prevState) => {
+      return !prevState;
+    })}>
+      <h1>List Settings</h1>
+    </button>
   );
 }

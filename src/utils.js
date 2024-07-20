@@ -1,8 +1,27 @@
 export const workdayDomComponents = {
-    "courseListContainer": 'div.WC-N.WGYN',
-    "courseListContainerParent": "div.WFYN.WKYN.WF5",
-    "courseListItem": "li.WLUF.WD0N.WF5.WCWF",
+    // "courseListContainer": 'div.WF-N.WJYN',
+    "courseListContainerParent": 'div[role="region"][aria-label="Search Results"]',
+    "courseListItem": 'li[data-automation-id="compositeContainer"]',
     "expandButton": 'div[role="button"][data-automation-id="expandAll"]',
-    "urlDiv": "div.WLNO.WFMO.WPMO", // should be the course name div's parent
-    "barAboveList": "span.WNYN.WA-N",
+    // "barAboveList": "span.WA-N.WD-N",
+}
+
+export function grabCourseListContainer() {
+    const courseListContainerParent = document.querySelector(workdayDomComponents["courseListContainerParent"]);
+    if (courseListContainerParent) {
+        for (const child of courseListContainerParent.children) {
+            if (child.firstChild && child.firstChild.tagName.toLowerCase() === "ul") {
+                return child;
+            }
+        }    
+    }
+
+    return null;
+}
+
+export function grabBarAboveList() {
+    const courseListContainerParent = document.querySelector(workdayDomComponents["courseListContainerParent"]);
+    if (courseListContainerParent) return courseListContainerParent.firstChild;
+
+    return null;
 }

@@ -4,9 +4,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import CourseListContainer from "./CourseList/CourselistContainer";
 import SettingsMenu from "./Settings/SettingsMenu";
-import { workdayDomComponents}  from "./utils.js";
+import { workdayDomComponents, grabCourseListContainer }  from "./utils.js";
 
-console.log("contents.js loaded");
+console.log("better courselist: content.js loaded");
 
 // global observer
 const observer = new MutationObserver((mutationsList, observer) => {
@@ -19,7 +19,7 @@ const observer = new MutationObserver((mutationsList, observer) => {
 
 function handleDOMChanges() {
     // find the div that contains the course list
-    const courseListContainer = document.querySelector(workdayDomComponents["courseListContainer"]);
+    const courseListContainer = grabCourseListContainer();
     if (courseListContainer) {
         // inject react element if it"s not there yet
         const check = document.getElementById("react-root");
@@ -42,14 +42,18 @@ function handleDOMChanges() {
 
 
             // second root for settings menu
-            const injection2 = document.createElement("div");
-            injection2.id = "settings-root";
-            target.insertBefore(injection2, target.childNodes[1]);
+            const check2 = document.getElementById("settings-root");
+            if (!check2) {
+                const injection2 = document.createElement("div");
+                injection2.id = "settings-root";
+                target.insertBefore(injection2, target.childNodes[1]);
 
-            const container2 = document.getElementById("settings-root");
-            const root2 = createRoot(container2);
+                const container2 = document.getElementById("settings-root");
+                const root2 = createRoot(container2);
 
-            root2.render(<SettingsMenu/>);
+                root2.render(<SettingsMenu/>);    
+            }
+            
 
             reconnectObserver();
         }
@@ -67,9 +71,6 @@ function reconnectObserver() {
         subtree: true
     });
 }
-
-
-
 
 function observeDom() {
     // initial call 

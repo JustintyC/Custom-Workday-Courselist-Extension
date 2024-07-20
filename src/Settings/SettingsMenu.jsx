@@ -3,7 +3,7 @@ import SettingsButton from './SettingsButton';
 import { createRoot } from "react-dom/client";
 import { v4 as uuidv4 } from 'uuid';
 import "./settings.css";
-import { workdayDomComponents } from '../utils';
+import { workdayDomComponents, grabBarAboveList } from '../utils';
 
 export default function SettingsMenu() {
     // load user settings into states
@@ -25,18 +25,21 @@ export default function SettingsMenu() {
         setColourIndicators(getStoredSetting("colourIndicators", true));
     }, []);
 
-
     const [settingsOpen, setSettingsOpen] = useState(false);
 
     // insert the settings button 
-    const barAboveList = document.querySelector(workdayDomComponents["barAboveList"]);
-    if (barAboveList && barAboveList.firstElementChild.id != "BetterCourselistSettings") {
-        const injection = document.createElement("div");
-        injection.id = "BetterCourselistSettings";
-        barAboveList.append(injection);
-        const root = createRoot(injection);
-        root.render(<SettingsButton settingsMenuState={[settingsOpen, setSettingsOpen]}/>);
-    }
+    useEffect(() => {
+        const barAboveList = grabBarAboveList();
+        if (barAboveList && !barAboveList.querySelector("#listSettingsButton")) {
+            const injection = document.createElement("div");
+            injection.id = "listSettingsButton";
+            barAboveList.append(injection);
+            const root = createRoot(injection);
+            root.render(<SettingsButton settingsMenuState={[settingsOpen, setSettingsOpen]}/>);
+        }    
+    }, []);
+
+    
 
     const settingKeys = Object.keys(settings);
 
@@ -44,37 +47,27 @@ export default function SettingsMenu() {
     const rows = [];
     for (let i = 0; i < settingKeys.length; i+=2) {
         const key1 = settingKeys[i];
-        try {
-            const key2 = settingKeys[i + 1];
+        const key2 = settingKeys[i + 1];
 
-            rows.push(
-                <tr>
-                    <Setting key={uuidv4()} setting={key1} value={settings[key1]}/>
-                    <Setting key={uuidv4()} setting={key2} value={settings[key2]}/>
-                </tr>
-            );
-        } catch (error) {
-            rows.push(
-                <tr>
-                    <Setting key={uuidv4()} setting={key1} value={settings[key1]}/>
-                </tr>
-            );
-        }
-        
+        rows.push(
+            <tr key={i}>
+                <Setting key={uuidv4()} setting={key1} value={settings[key1]}/>
+                {key2 && <Setting key={uuidv4()} setting={key2} value={settings[key2]}/>}
+            </tr>
+        );
     }
 
-    
     return (
-    <>
-        {settingsOpen && (
-            <table id="settingsMenu" style={{ display: "table" }}>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
-        )}
-    </>
-    )
+        <>
+            {settingsOpen && (
+                <table id="settingsMenu" style={{ display: "table" }}>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            )}
+        </>
+    );
 }
 
 function Setting({ setting, value }) {

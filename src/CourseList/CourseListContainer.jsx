@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
 import CourseList from "./CourseList";
 import "./courseListStyles.css"
-import { workdayDomComponents } from "../utils.js";
+import { workdayDomComponents, grabCourseListContainer } from "../utils.js";
 
 // contains the setting menu and new course list
 export default function CourseListContainer() {
@@ -11,7 +11,7 @@ export default function CourseListContainer() {
   const [ parsedCourses, setParsedCourses ] = useState([]);
   const [ displayOriginalList, setDisplayOriginalList ] = useState([false]);
 
-  const courseListContainer = document.querySelector(workdayDomComponents["courseListContainer"]);
+  const courseListContainer = grabCourseListContainer();
 
   // on mount: get courses loaded by current page, set observer to start observing 
   // for DOM changes and update courselist if changes are found
@@ -43,7 +43,7 @@ export default function CourseListContainer() {
         try {
             const courseList = courseListContainer.querySelector("ul");
             foundCourses = courseList.querySelectorAll(workdayDomComponents["courseListItem"]);
-            console.log(`found courses: ${foundCourses.length}`);
+            // console.log(`found courses: ${foundCourses.length}`);
 
             // check if courses really changed before updating courses state
             if (foundCourses.length !== courses.length) {
@@ -95,7 +95,7 @@ export default function CourseListContainer() {
     if (courseListContainer ) oldCourseList = courseListContainer.querySelector("ul");
     else return;
 
-    const expandButton = document.querySelector('div[role="button"][data-automation-id="expandAll"]');
+    const expandButton = document.querySelector(workdayDomComponents["expandButton"]);
     if (!displayOriginalList) {
       oldCourseList.style.display = "none";
       if (expandButton) expandButton.style.display = "none";
