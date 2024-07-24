@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import MoreInfoMenu from './MoreInfoMenu';
+import { fetchMoreInfo } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -128,13 +130,16 @@ const section = {
     "term": term,
     "days": days,
     "time": time,
-    "url": url            
+    "url": url,
+    "apiCallUrl": apiCallUrl          
 }
 
 */
 
 function Section({ section }) {
     const [colourIndicators, setColourIndicators] = useState(true);
+    const [ moreInfoMenu, setMoreInfoMenu ] = useState(false);
+    const [ moreInfoContent, setMoreInfoContent ] = useState({});
 
     useEffect(() => {
         // check localStorage if the user has colourIndicators turned on and set state to that
@@ -183,42 +188,76 @@ function Section({ section }) {
 
     return (
         <tr className="SectionChild">
-            <td className="SectionChildTd td_long">
-                <div className="SectionChild_courseNameCell">
-                    <div className="AddButtonGoHere" id={section.sectionCode}></div>
-                    <div className="SectionChildTd_courseName">
-                        <a href={section.url} target="_blank" rel="noopener noreferrer">
-                            {section.sectionCode}
-                        </a>
-                    </div>
-                </div>
-            </td>
-            <td className="SectionChildTd td_med">
-                <div
-                    className={colourIndicators ? "enrollmentColourDiv" : ""}
-                    style={{ backgroundColor: colourIndicators ? enrollmentColour(section.enrolled, section.waitlist) : "" }}
-                >
-                    {section.waitlist ? (
-                        <>
-                            <span>Enrolled: {section.enrolled}</span>
-                            <br />
-                            WL: {section.waitlist}
-                        </>
-                    ) : (
-                        <span>Enrolled: {section.enrolled}</span>
-                    )}
-                </div>
-            </td>
-            <td className="SectionChildTd td_med">
-                <span>{section.learningType}</span><br/>
-                <span>
-                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
-                        {section.location}
-                    </a>
-                </span>
-            </td>
-            <td className="SectionChildTd td_short">{section.days}</td>
-            <td className="SectionChildTd td_long">{section.time}</td>
+            <table style={{ display: "table", width: "100%"}}>
+                <tr>
+                    <table style={{ display: "table", width: "100%"}}>
+                        <tr>
+                            <td className="SectionChildTd td_long">
+                                <div className="SectionChild_courseNameCell">
+                                    <div className="AddButtonGoHere" id={section.sectionCode}></div>
+                                    <button className="moreInfoButton" onClick={async () => {
+                                        if (moreInfoMenu) setMoreInfoMenu(false);
+                                        else {
+                                            setMoreInfoMenu(true);
+                                            const content = await fetchMoreInfo(section.apiCallUrl);
+                                            setMoreInfoContent(content);    
+                                        }                                        
+                                    }}>i</button>
+                                    <div className="SectionChildTd_courseName">
+                                        <a href={section.url} target="_blank" rel="noopener noreferrer">
+                                            {section.sectionCode}
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td className="SectionChildTd td_med">
+                                <div
+                                    className={colourIndicators ? "enrollmentColourDiv" : ""}
+                                    style={{ backgroundColor: colourIndicators ? enrollmentColour(section.enrolled, section.waitlist) : "" }}
+                                >
+                                    {section.waitlist ? (
+                                        <>
+                                            <span>Enrolled: {section.enrolled}</span>
+                                            <br />
+                                            WL: {section.waitlist}
+                                        </>
+                                    ) : (
+                                        <span>Enrolled: {section.enrolled}</span>
+                                    )}
+                                </div>
+                            </td>
+                            <td className="SectionChildTd td_med">
+                                <span>{section.learningType}</span><br/>
+                                <span>
+                                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
+                                        {section.location}
+                                    </a>
+                                </span>
+                            </td>
+                            <td className="SectionChildTd td_short">{section.days}</td>
+                            <td className="SectionChildTd td_long">{section.time}</td>        
+                        </tr>
+                    </table>
+                </tr>
+
+
+                {moreInfoMenu && 
+                    <tr>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <button onClick={() => setMoreInfoMenu(false)} style={{
+                                border: "none",
+                                font: "14px Arial, sans-serif",
+                                fontWeight: "bold",
+                                backgroundColor: "transparent",
+                                cursor: "pointer"
+                            }}>✖</button>
+                            <MoreInfoMenu moreInfoContent={moreInfoContent}/>    
+                        </div>
+                        
+                    </tr>
+                }
+                
+            </table>
         </tr>
     );
 }

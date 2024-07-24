@@ -54,6 +54,7 @@ export function parseCourses(courses) {
 
         from DOM:
         - url for the section
+        - url for the api call for section details from workday
 
         */
 
@@ -139,13 +140,14 @@ export function parseCourses(courses) {
             time = "";
         }
 
-        // URL
+        // URLs
         const urlDiv = promptOptions[0].parentElement;
         const dataAutomationId = urlDiv.getAttribute("data-automation-id");
         const daIdFirstHalf  = dataAutomationId.split("_")[1].split("$")[0];
         const daIdSecondHalf = dataAutomationId.split("_")[1].split("$")[1];
         const url = `https://wd10.myworkday.com/ubc/d/inst/1$${daIdFirstHalf}/${daIdFirstHalf}$${daIdSecondHalf}.htmld`;
-
+        const apiCallUrl = `https://wd10.myworkday.com/ubc/inst/1$${daIdFirstHalf}/${daIdFirstHalf}$${daIdSecondHalf}.htmld`;
+        
         // construct course object
         const courseObj = {
             "courseCode": courseCode,
@@ -162,7 +164,8 @@ export function parseCourses(courses) {
             "term": term,
             "days": days,
             "time": time,
-            "url": url            
+            "url": url,
+            "apiCallUrl": apiCallUrl          
         }
 
 
