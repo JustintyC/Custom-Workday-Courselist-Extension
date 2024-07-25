@@ -31,20 +31,19 @@ export async function fetchMoreInfo(url) {
             for (let json of firstArr) {
                 switch(json.label) {
                     case "Status":
-                        status = json.instances[0].text;
+                        status = json.instances && json.instances[0] && json.instances[0].text;
                         break;
                     case "Start/End Date":
                         startEndDate = json.value;
                         break;
                     case "Grading Basis":
-                        grading = json.instances.map(instance => instance.text);
+                        grading = json.instances && json.instances.map(instance => instance.text);
                         break;
                     case "Description":
-                        description = json.value;
-                        description = description.replace(/<\/?[a-zA-Z]+>/g, "");
+                        description = json.value.replace(/<\/?[a-zA-Z]+>/g, "");
                         break;
                     case "Other Instructional Formats":
-                        otherFormats = json.instances.map(instance => instance.text);
+                        otherFormats = json.instances && json.instances.map(instance => instance.text);
                         break;
                     default:
                         break;
@@ -76,7 +75,7 @@ export async function fetchMoreInfo(url) {
             for (let json of secondArr) {
                 switch (json.label) {
                     case "Course Tags":
-                        courseTags = json.instances.map(instance => instance.text);
+                        courseTags = json.instances && json.instances.map(instance => instance.text);
                         break;
                     case "Available Unreserved Seats":
                         availUnreserved = json.value;
@@ -85,7 +84,7 @@ export async function fetchMoreInfo(url) {
                         availReserved = json.value;
                         break;
                     case "Meeting Patterns":
-                        meetingPatterns = json.instances.map(instance => instance.text);
+                        meetingPatterns = json.instances && json.instances.map(instance => instance.text);
                         break;
                     case "Notes":
                         notes = json.value.replace(/<\/?[a-zA-Z]+>/g, "");
@@ -99,7 +98,7 @@ export async function fetchMoreInfo(url) {
                             }
                         } else if (json.propertyName.includes("Reserved_Capacity_Line_Student")) {
                             // reserved seats distribution: propertyName = wd:Student_Course_Section_Component__Nonsingular_--IS
-                            reservedDist = json.instances.map(instance => instance.text);
+                            reservedDist = json.instances && json.instances.map(instance => instance.text);
                         }
 
                         break;
