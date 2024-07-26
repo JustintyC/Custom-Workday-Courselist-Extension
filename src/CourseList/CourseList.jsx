@@ -21,7 +21,11 @@ function Course({ courseJson }) {
     const terms = Object.keys(courseJson).slice(4);
 
     async function toggleDescriptionMenu() {
-        setDescriptionMenu(!descriptionMenu);
+        if (descriptionMenu) {
+            setDescriptionMenu(false);
+            return;
+        }
+        setDescriptionMenu(true);
         const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
         const [
             parsedDescription,

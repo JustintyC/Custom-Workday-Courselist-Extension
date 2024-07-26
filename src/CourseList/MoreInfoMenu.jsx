@@ -27,13 +27,8 @@ return {
 
 
 function DisplayContent({moreInfoContent}) {
-    const [
-        parsedDescription,
-        parsedPrereqs,
-        parsedCoreqs,
-        parsedEquiv
-    ] = parseDescription(moreInfoContent.description);
-
+    const multiTerm = isMultiTerm(moreInfoContent.startEndDate);
+    const processedMeetingPatterns = processMeetingPatterns(moreInfoContent.meetingPatterns);
 
     return <>
         {/* <div style={{width: "100%"}}>
@@ -46,7 +41,7 @@ function DisplayContent({moreInfoContent}) {
 
         <div style={{display: "flex", width: "100%"}}>
             <div style={{width: "50%"}}>
-                <span className='moreInfoHeading'>Instructors</span><br/>
+                <span className='moreInfoHeading'>Instructors:</span><br/>
                 {
                     moreInfoContent.instructors ? 
                         moreInfoContent.instructors.map((instructor, index) => (
@@ -55,8 +50,22 @@ function DisplayContent({moreInfoContent}) {
                             </>
                             
                         ))
-                        : "Unavailable"
+                        : <>Unavailable<br/></>
                 }
+                
+                <span className='moreInfoHeading'>Meeting pattern:</span><br/>
+                {
+                    processedMeetingPatterns.length > 0 ?
+                        processedMeetingPatterns.map((pattern, index) => 
+                            <><span key={index}>{pattern}</span><br/></>
+                        )
+                        : <>Unavailable<br/></>
+                }
+                
+                {multiTerm && <>
+                    <span className='moreInfoHeading'>This is a multi-term course:</span><br/>
+                    {moreInfoContent.startEndDate}
+                </>}
             </div>
 
             <div style={{width: "50%"}}>
@@ -76,15 +85,16 @@ function DisplayContent({moreInfoContent}) {
                     moreInfoContent.reservedDist.map((item, index) => {
                         let parsedItem = item.replaceAll("- reserved for Students In -", "-")
                         .replaceAll("- (Vancouver)", "").replaceAll("- (Okanagan)", "")
-                        .replaceAll("(Vancouver)", "").replaceAll("(Okanagan)", "");
+                        .replaceAll("(Vancouver)", "").replaceAll("(Okanagan)", "")
+                        .replaceAll(" , ", ", ");
 
                         return <>
-                            <br/><span key={index}>{parsedItem}</span>
+                            <br/><span key={index} style={{marginTop: "5px"}}>{parsedItem}</span>
                         </> 
                     })
                     : "Unavailable"
                 }
-            </div>    
+            </div>
         </div>
 
         
@@ -95,28 +105,33 @@ function DisplayContent({moreInfoContent}) {
 
 }
 
-function parseDescription(description) {
-    const parsedDescription = description.split(/(?=Corequisite:|Equivalency:|Prerequisite:)/i)[0].trim();
+function isMultiTerm(startEndDate) {
+    const startMonth = parseInt(startEndDate.split(" - ")[0].split("-")[1]);
+    const endMonth   = parseInt(startEndDate.split(" - ")[1].split("-")[1]);
 
-    const prereqsMatch = description.split("Prerequisite:")[1];
-    const parsedPrereqs = prereqsMatch 
-        ? `Prerequisites: ${prereqsMatch.split(/(?=Corequisite:|Equivalency:)/i)[0].trim()}` 
-        : null;
+    if (1 <= startMonth && startMonth <= 4) return !(1 <= endMonth && endMonth <= 4);
+    if (5 <= startMonth && startMonth <= 6) return !(5 <= endMonth && endMonth <= 6);
+    if (7 <= startMonth && startMonth <= 8) return !(7 <= endMonth && endMonth <= 8);
+    if (9 <= startMonth && startMonth <= 12) return !(9 <= endMonth && endMonth <= 12);
+    return false;
+}
 
-    const coreqsMatch = description.split("Corequisite:")[1];
-    const parsedCoreqs = coreqsMatch 
-        ? `Corequisites: ${coreqsMatch.split(/(?=Prerequisite:|Equivalency:)/i)[0].trim()}` 
-        : null;
+function processMeetingPatterns(patterns) {
+    if (!patterns) return [];
 
-    const equivMatch = description.split("Equivalency:")[1];
-    const parsedEquiv = equivMatch 
-        ? `Equivalent: ${equivMatch.split(/(?=Prerequisite:|Corequisite:)/i)[0].trim()}` 
-        : null;
+    let tracker = new Set();
 
-    return [
-        parsedDescription,
-        parsedPrereqs,
-        parsedCoreqs,
-        parsedEquiv
-    ];
+    const out = patterns.map((pattern) => {
+        const patternArr = pattern.split("|");
+        const day = patternArr[patternArr.length - 3].trim();
+        const time = patternArr[patternArr.length - 2].trim();
+        const patternStr = `${day} - ${time}`;
+        
+        if (!tracker.has(patternStr)) {
+            tracker.add(patternStr);
+            return patternStr;
+        } else return null;
+    }).filter(Boolean);
+
+    return out;
 }
