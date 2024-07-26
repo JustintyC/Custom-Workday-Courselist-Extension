@@ -36,36 +36,58 @@ function DisplayContent({moreInfoContent}) {
 
 
     return <>
-        <div style={{width: "100%"}}>
+        {/* <div style={{width: "100%"}}>
             <div className='moreInfoHeading'>Description</div>
             <p>{parsedDescription}</p>
-            {parsedPrereqs && 
-                <>
-                    {parsedPrereqs}<br/>
-                </>
-            }
-            {parsedCoreqs && 
-                <>
-                    {parsedCoreqs}<br/>
-                </>
-            }
-            {parsedEquiv && 
-                <>
-                    {parsedEquiv}<br/>
-                </>
-            }
+            {parsedPrereqs && <>{parsedPrereqs}<br/></>}
+            {parsedCoreqs && <>{parsedCoreqs}<br/></>}
+            {parsedEquiv && <>{parsedEquiv}<br/></>}
+        </div> */}
+
+        <div style={{display: "flex", width: "100%"}}>
+            <div style={{width: "50%"}}>
+                <span className='moreInfoHeading'>Instructors</span><br/>
+                {
+                    moreInfoContent.instructors ? 
+                        moreInfoContent.instructors.map((instructor, index) => (
+                            <>
+                                <span key={index}>{instructor}</span><br/>
+                            </>
+                            
+                        ))
+                        : "Unavailable"
+                }
+            </div>
+
+            <div style={{width: "50%"}}>
+                <span className="moreInfoHeading">Available unreserved: </span>
+                {moreInfoContent.availUnreserved != null ? 
+                moreInfoContent.availUnreserved : "Unavailable"}
+                <br/>
+
+                <span className="moreInfoHeading">Available reserved: </span>
+                {moreInfoContent.availReserved != null ? 
+                moreInfoContent.availReserved : "Unavailable"}
+                <br/>
+
+                <span className="moreInfoHeading">Reserved seats info: </span>
+                {
+                    moreInfoContent.reservedDist ? 
+                    moreInfoContent.reservedDist.map((item, index) => {
+                        let parsedItem = item.replaceAll("- reserved for Students In -", "-")
+                        .replaceAll("- (Vancouver)", "").replaceAll("- (Okanagan)", "")
+                        .replaceAll("(Vancouver)", "").replaceAll("(Okanagan)", "");
+
+                        return <>
+                            <br/><span key={index}>{parsedItem}</span>
+                        </> 
+                    })
+                    : "Unavailable"
+                }
+            </div>    
         </div>
 
-        <div>
-            <h1 className='moreInfoHeading'>Instructors</h1>
-            {
-                moreInfoContent.instructors ? 
-                    moreInfoContent.instructors.map((instructor, index) => (
-                        <h1 key={index}>{instructor}</h1>
-                    ))
-                    : "Unavailable"
-            }
-        </div>
+        
 
 
     </>

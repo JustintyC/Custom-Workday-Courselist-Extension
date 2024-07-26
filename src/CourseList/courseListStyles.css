@@ -15,16 +15,41 @@
 }
 
 .CodeButton {
+    border: none;
+    width: calc(100%-35px);
+}
+
+.CodeButtonDiv {
     border: 0.5px solid #CFD4D7;
     border-top: none;
 }
 
-.CodeButton:first-child {
+.CodeButtonDiv:first-child {
     border-top: 0.5px solid #CFD4D7;
 }
 
 .CodeButton:hover {
     background-color: #f1f1f1; 
+}
+
+.DescriptionButton {
+    background-color: #FFFFFF;
+    border: none;
+    border-left: 0.5px solid #CFD4D7;
+    width: 35px;
+    cursor: pointer;
+    font: 16px Arial, sans-serif;
+    font: bold;
+}
+
+.DescriptionButton:hover {
+    background-color: #f1f1f1; 
+}
+
+.DescriptionBox {
+    font: 14px Arial, sans-serif;
+    padding: 0px 30px 10px;
+    line-height: 19px;
 }
 
 .arrow {
@@ -137,10 +162,12 @@
     padding: 5px;
     font: 14px Arial, sans-serif;
     width: 100%;
+    line-height: 19px;
 }
 
 .moreInfoHeading {
     color: #333333;
     font: 15px Arial, sans-serif;
     font-weight: bold;
+    line-height: 23px;
 }

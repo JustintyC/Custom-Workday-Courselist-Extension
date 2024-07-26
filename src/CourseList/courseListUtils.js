@@ -21,7 +21,6 @@ export async function fetchMoreInfo(url) {
             */
             const firstArr = data["body"]["children"][0]["children"][0]["children"];            
             
-            // status
             let status = null;
             let startEndDate = null;
             let grading = null;
@@ -129,3 +128,28 @@ export async function fetchMoreInfo(url) {
     return out;
 }
 
+export function parseDescription(description) {
+    const parsedDescription = description.split(/(?=Corequisite:|Equivalency:|Prerequisite:)/i)[0].trim();
+
+    const prereqsMatch = description.split("Prerequisite:")[1];
+    const parsedPrereqs = prereqsMatch 
+        ? `Prerequisites: ${prereqsMatch.split(/(?=Corequisite:|Equivalency:)/i)[0].trim()}` 
+        : null;
+
+    const coreqsMatch = description.split("Corequisite:")[1];
+    const parsedCoreqs = coreqsMatch 
+        ? `Corequisites: ${coreqsMatch.split(/(?=Prerequisite:|Equivalency:)/i)[0].trim()}` 
+        : null;
+
+    const equivMatch = description.split("Equivalency:")[1];
+    const parsedEquiv = equivMatch 
+        ? `Equivalent: ${equivMatch.split(/(?=Prerequisite:|Corequisite:)/i)[0].trim()}` 
+        : null;
+
+    return [
+        parsedDescription,
+        parsedPrereqs,
+        parsedCoreqs,
+        parsedEquiv
+    ];
+}

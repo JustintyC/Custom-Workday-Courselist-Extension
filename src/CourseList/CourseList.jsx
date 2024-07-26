@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MoreInfoMenu from './MoreInfoMenu';
-import { fetchMoreInfo } from "./courseListUtils.js";
+import { fetchMoreInfo, parseDescription } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -12,15 +12,62 @@ export default function CourseList({ coursesArr }) {
 
 function Course({ courseJson }) {
     const [visible, setVisibility] = useState(false);
+    const [descriptionMenu, setDescriptionMenu] = useState(false);
+    const [description, setDescription] = useState("Loading...");
+    const [prereqs, setPrereqs] = useState(null);
+    const [coreqs, setCoreqs] = useState(null);
+    const [equiv, setEquiv] = useState(null);
 
-    const terms = Object.keys(courseJson).slice(3);
+    const terms = Object.keys(courseJson).slice(4);
+
+    async function toggleDescriptionMenu() {
+        setDescriptionMenu(!descriptionMenu);
+        const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
+        const [
+            parsedDescription,
+            parsedPrereqs,
+            parsedCoreqs,
+            parsedEquiv
+        ] = parseDescription(moreInfo.description);
+        setDescription(parsedDescription);
+        setPrereqs(parsedPrereqs);
+        setCoreqs(parsedCoreqs);
+        setEquiv(parsedEquiv);
+    }
+
 
     return (
         <>
-            <button className="CodeButton" onClick={() => setVisibility(!visible)}>
-                {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
-                <span className="arrow">{visible? "▼" : "◀"}</span>
-            </button>
+            <div className="CodeButtonDiv">
+                <div style={{width: "100%", display: "flex"}}>
+                    <button className="CodeButton" onClick={() => setVisibility(!visible)}>
+                        <span style={{color: "#CFD4D7", marginRight: "10px"}}>{visible? "▼" : "▶"}</span>
+                        {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
+                    </button>
+                    <button className="DescriptionButton" onClick={toggleDescriptionMenu}
+                    style={descriptionMenu ? {borderBottom: "0.5px solid #CFD4D7"} : {}}
+                    title="Toggle course description">
+                        {descriptionMenu ? "✖" : "?"}
+                    </button>    
+                </div>
+                
+                {descriptionMenu && (
+                    <div className="DescriptionBox">
+                        {description}
+                        {prereqs && (
+                            <><br/><p style={{marginTop: "5px"}}>{prereqs}</p></>
+                        )}
+                        {coreqs && (
+                            <><br/><p style={{marginTop: "5px"}}>{coreqs}</p></>
+                        )}
+                        {equiv && (
+                            <><br/><p style={{marginTop: "5px"}}>{equiv}</p></>
+                        )}
+                    </div>    
+                )}
+                
+            </div>
+            
 
             {visible && (
                 <div style={{ display: "block" }}>
@@ -195,6 +242,12 @@ function Section({ section }) {
                             <td className="SectionChildTd td_long">
                                 <div className="SectionChild_courseNameCell">
                                     <div className="AddButtonGoHere" id={section.sectionCode}></div>
+                                    
+                                    <div className="SectionChildTd_courseName">
+                                        <a href={section.url} target="_blank" rel="noopener noreferrer">
+                                            {section.sectionCode}
+                                        </a>
+                                    </div>
                                     <button className="moreInfoButton" onClick={async () => {
                                         if (moreInfoMenu) setMoreInfoMenu(false);
                                         else {
@@ -203,11 +256,6 @@ function Section({ section }) {
                                             setMoreInfoContent(content);    
                                         }                                        
                                     }}>i</button>
-                                    <div className="SectionChildTd_courseName">
-                                        <a href={section.url} target="_blank" rel="noopener noreferrer">
-                                            {section.sectionCode}
-                                        </a>
-                                    </div>
                                 </div>
                             </td>
                             <td className="SectionChildTd td_med">
