@@ -15,16 +15,42 @@
 }
 
 .CodeButton {
+    border: none;
+    width: calc(100%-35px);
+}
+
+.CodeButtonDiv {
     border: 0.5px solid #CFD4D7;
     border-top: none;
 }
 
-.CodeButton:first-child {
+.CodeButtonDiv:first-child {
     border-top: 0.5px solid #CFD4D7;
 }
 
 .CodeButton:hover {
     background-color: #f1f1f1; 
+}
+
+.DescriptionButton {
+    background-color: #FFFFFF;
+    border: none;
+    border-left: 0.5px solid #CFD4D7;
+    width: 35px;
+    cursor: pointer;
+    font: 16px Arial, sans-serif;
+    font: bold;
+}
+
+.DescriptionButton:hover {
+    background-color: #f1f1f1; 
+    transition-duration: 0.1s;
+}
+
+.DescriptionBox {
+    font: 14px Arial, sans-serif;
+    padding: 0px 30px 10px;
+    line-height: 19px;
 }
 
 .arrow {
@@ -90,8 +116,16 @@
 }
 
 .SectionChildTd_courseName {
+    display: flex;
     flex: 1;
     width: auto;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+.SectionChildTd_courseName a {
+    display: flex;
+    align-items: center;
 }
 
 .SectionChild:nth-child(odd) {
@@ -105,4 +139,36 @@
 .enrollmentColourDiv {
     border: 0.5px solid #4A4A4A;
     border-radius: 5px;
+}
+
+.moreInfoButton {
+    background-color: transparent;
+    color: #CFD4D7;
+    font: 16px Arial, sans-serif;
+    border: 0.5px solid #CFD4D7;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.moreInfoMenu {
+    background-color: #EEF1F2;
+    border: 0.5px solid #CFD4D7;
+    border-radius: 10px;
+    border-collapse: separate;
+    overflow: hidden;
+    margin: 5px;
+    padding: 5px;
+    font: 14px Arial, sans-serif;
+    width: 100%;
+    line-height: 19px;
+}
+
+.moreInfoHeading {
+    color: #333333;
+    font: 15px Arial, sans-serif;
+    font-weight: bold;
+    line-height: 23px;
 }

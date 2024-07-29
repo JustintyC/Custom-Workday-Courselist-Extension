@@ -3,7 +3,7 @@ import SettingsButton from './SettingsButton';
 import { createRoot } from "react-dom/client";
 import { v4 as uuidv4 } from 'uuid';
 import "./settings.css";
-import { workdayDomComponents, grabBarAboveList } from '../utils';
+import { grabBarAboveList } from '../utils';
 
 export default function SettingsMenu() {
     // load user settings into states
@@ -97,6 +97,7 @@ function Setting({ setting, value }) {
                     type='checkbox'
                     checked={state}
                     onChange={handleClick}
+                    id={setting}
             />
             {getDisplayText(setting)}    
         </div>
@@ -108,9 +109,9 @@ function Setting({ setting, value }) {
 function getDisplayText(key) {
     switch(key) {
         case "autoOpenTerm":
-            return "Auto Open Term Tab";
+            return "Expand Terms By Default";
         case "autoOpenMode":
-            return "Auto Open Mode Tab";
+            return "Expand Modes By Default";
         case "displayOriginalList":
             return "Display Original List";
         case "colourIndicators":

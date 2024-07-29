@@ -14,6 +14,7 @@ export function parseCourses(courses) {
         code: ...
         name: ...
         credits: ...
+        sampleApi: ... (an api call url to one of the sections of this course)
         W1: {
             Lecture: [ ... ]
             Lab: [ ... ]        
@@ -54,6 +55,7 @@ export function parseCourses(courses) {
 
         from DOM:
         - url for the section
+        - url for the api call for section details from workday
 
         */
 
@@ -67,6 +69,8 @@ export function parseCourses(courses) {
         const courseCode = `${subject} ${numbers}`;             // course code
         const courseName = title.split(" - ")[1].trim();        // course name
         const sectionCode = title.split(" - ")[0].trim();       // section code
+
+        const campus = subject.split("_")[1];
 
         // middle row
         // mode
@@ -102,7 +106,9 @@ export function parseCourses(courses) {
                 const fullLocation = detailsTextArr[0];
                 location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ")[2]}`;
                 const locationArr = location.split(" ");
-                locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`;
+                campus === "V" 
+                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`
+                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`;
             }
             days = detailsTextArr[detailsTextArr.length - 3].trim();
             time = detailsTextArr[detailsTextArr.length - 2].trim();
@@ -139,13 +145,14 @@ export function parseCourses(courses) {
             time = "";
         }
 
-        // URL
+        // URLs
         const urlDiv = promptOptions[0].parentElement;
         const dataAutomationId = urlDiv.getAttribute("data-automation-id");
         const daIdFirstHalf  = dataAutomationId.split("_")[1].split("$")[0];
         const daIdSecondHalf = dataAutomationId.split("_")[1].split("$")[1];
         const url = `https://wd10.myworkday.com/ubc/d/inst/1$${daIdFirstHalf}/${daIdFirstHalf}$${daIdSecondHalf}.htmld`;
-
+        const apiCallUrl = `https://wd10.myworkday.com/ubc/inst/1$${daIdFirstHalf}/${daIdFirstHalf}$${daIdSecondHalf}.htmld`;
+        
         // construct course object
         const courseObj = {
             "courseCode": courseCode,
@@ -162,13 +169,14 @@ export function parseCourses(courses) {
             "term": term,
             "days": days,
             "time": time,
-            "url": url            
+            "url": url,
+            "apiCallUrl": apiCallUrl          
         }
 
 
         // insert course into output
         if (out.length == 0 || out[out.length - 1]["code"] != courseCode) {
-            out.push({ code: courseCode, name: courseName, credits: credits});
+            out.push({ code: courseCode, name: courseName, credits: credits, sampleApi: apiCallUrl });
         }
         let courseJson = out[out.length - 1];
 

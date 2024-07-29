@@ -4,6 +4,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import CourseListContainer from "./CourseList/CourselistContainer";
 import SettingsMenu from "./Settings/SettingsMenu";
+import BottomMenu from "./CourseList/BottomMenu.jsx";
 import { workdayDomComponents, grabCourseListContainer }  from "./utils.js";
 
 console.log("better courselist: content.js loaded");
@@ -51,7 +52,21 @@ function handleDOMChanges() {
                 const container2 = document.getElementById("settings-root");
                 const root2 = createRoot(container2);
 
-                root2.render(<SettingsMenu/>);    
+                root2.render(<SettingsMenu/>);
+            }
+
+            // third root for bottom of screen menu
+            const check3 = document.getElementById("bottomMenu-root");
+            if (!check3) {
+                const body = document.querySelector("body");
+                const injection3 = document.createElement("div");
+                injection3.id = "bottomMenu-root";
+                body.prepend(injection3);
+
+                const container3 = document.getElementById("bottomMenu-root");
+                const root3 = createRoot(container3);
+
+                root3.render(<BottomMenu/>);
             }
             
 

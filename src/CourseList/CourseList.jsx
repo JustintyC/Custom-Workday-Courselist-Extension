@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import MoreInfoMenu from './MoreInfoMenu';
+import { fetchMoreInfo, parseDescription } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -10,21 +12,73 @@ export default function CourseList({ coursesArr }) {
 
 function Course({ courseJson }) {
     const [visible, setVisibility] = useState(false);
+    const [descriptionMenu, setDescriptionMenu] = useState(false);
+    const [description, setDescription] = useState("Loading...");
+    const [prereqs, setPrereqs] = useState(null);
+    const [coreqs, setCoreqs] = useState(null);
+    const [equiv, setEquiv] = useState(null);
 
-    const terms = Object.keys(courseJson).slice(3);
+    const terms = Object.keys(courseJson).slice(4);
+
+    async function toggleDescriptionMenu() {
+        if (descriptionMenu) {
+            setDescriptionMenu(false);
+            return;
+        }
+        setDescriptionMenu(true);
+        if (description != "Loading...") return;
+        const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
+        const [
+            parsedDescription,
+            parsedPrereqs,
+            parsedCoreqs,
+            parsedEquiv
+        ] = parseDescription(moreInfo.description);
+        setDescription(parsedDescription);
+        setPrereqs(parsedPrereqs);
+        setCoreqs(parsedCoreqs);
+        setEquiv(parsedEquiv);
+    }
+
 
     return (
         <>
-            <button className="CodeButton" onClick={() => setVisibility(!visible)}>
-                {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
-                <span className="arrow">{visible? "▼" : "◀"}</span>
-            </button>
+            <div className="CodeButtonDiv">
+                <div style={{width: "100%", display: "flex"}}>
+                    <button className="CodeButton" onClick={() => setVisibility(!visible)}>
+                        <span style={{color: "#CFD4D7", marginRight: "10px"}}>{visible? "▼" : "▶"}</span>
+                        {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
+                    </button>
+                    <button className="DescriptionButton" onClick={toggleDescriptionMenu}
+                    style={descriptionMenu ? {borderBottom: "0.5px solid #CFD4D7"} : {}}
+                    title="Toggle course description">
+                        {descriptionMenu ? "✖" : "?"}
+                    </button>    
+                </div>
+                
+                {descriptionMenu && (
+                    <div className="DescriptionBox">
+                        {description}
+                        {prereqs && (
+                            <><br/><p style={{marginTop: "5px"}}>{prereqs}</p></>
+                        )}
+                        {coreqs && (
+                            <><br/><p style={{marginTop: "5px"}}>{coreqs}</p></>
+                        )}
+                        {equiv && (
+                            <><br/><p style={{marginTop: "5px"}}>{equiv}</p></>
+                        )}
+                    </div>    
+                )}
+                
+            </div>
+            
 
             {visible && (
                 <div style={{ display: "block" }}>
                     {
-                        terms.map((term) => {
-                            return <Term key={uuidv4()} termJson={courseJson[term]} term={term} />;
+                        terms.map((term, idx) => {
+                            return <Term key={idx} termJson={courseJson[term]} term={term} />;
                         })
                     }
                 </div>
@@ -33,7 +87,7 @@ function Course({ courseJson }) {
     );
 }
 
-function Term({ termJson, term }) {
+const Term = memo(function Term({ termJson, term }) {
     const [visible, setVisibility] = useState(false);
 
     useEffect(() => {
@@ -72,7 +126,7 @@ function Term({ termJson, term }) {
             )}
         </>
     );
-}
+});
 
 function Mode({ modeArr, mode }) {
     const [visible, setVisibility] = useState(false);
@@ -128,13 +182,16 @@ const section = {
     "term": term,
     "days": days,
     "time": time,
-    "url": url            
+    "url": url,
+    "apiCallUrl": apiCallUrl          
 }
 
 */
 
 function Section({ section }) {
     const [colourIndicators, setColourIndicators] = useState(true);
+    const [ moreInfoMenu, setMoreInfoMenu ] = useState(false);
+    const [ moreInfoContent, setMoreInfoContent ] = useState({});
 
     useEffect(() => {
         // check localStorage if the user has colourIndicators turned on and set state to that
@@ -183,42 +240,78 @@ function Section({ section }) {
 
     return (
         <tr className="SectionChild">
-            <td className="SectionChildTd td_long">
-                <div className="SectionChild_courseNameCell">
-                    <div className="AddButtonGoHere" id={section.sectionCode}></div>
-                    <div className="SectionChildTd_courseName">
-                        <a href={section.url} target="_blank" rel="noopener noreferrer">
-                            {section.sectionCode}
-                        </a>
-                    </div>
-                </div>
-            </td>
-            <td className="SectionChildTd td_med">
-                <div
-                    className={colourIndicators ? "enrollmentColourDiv" : ""}
-                    style={{ backgroundColor: colourIndicators ? enrollmentColour(section.enrolled, section.waitlist) : "" }}
-                >
-                    {section.waitlist ? (
-                        <>
-                            <span>Enrolled: {section.enrolled}</span>
-                            <br />
-                            WL: {section.waitlist}
-                        </>
-                    ) : (
-                        <span>Enrolled: {section.enrolled}</span>
-                    )}
-                </div>
-            </td>
-            <td className="SectionChildTd td_med">
-                <span>{section.learningType}</span><br/>
-                <span>
-                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
-                        {section.location}
-                    </a>
-                </span>
-            </td>
-            <td className="SectionChildTd td_short">{section.days}</td>
-            <td className="SectionChildTd td_long">{section.time}</td>
+            <table style={{ display: "table", width: "100%"}}>
+                <tr>
+                    <table style={{ display: "table", width: "100%"}}>
+                        <tr>
+                            <td className="SectionChildTd td_long">
+                                <div className="SectionChild_courseNameCell">
+                                    <div className="AddButtonGoHere" id={section.sectionCode}></div>
+                                    
+                                    <div className="SectionChildTd_courseName">
+                                        <a href={section.url} target="_blank" rel="noopener noreferrer">
+                                            {section.sectionCode}
+                                        </a>
+                                    </div>
+                                    <button className="moreInfoButton" onClick={async () => {
+                                        if (moreInfoMenu) setMoreInfoMenu(false);
+                                        else {
+                                            setMoreInfoMenu(true);
+                                            if (Object.keys(moreInfoContent).length > 0) return;
+                                            const content = await fetchMoreInfo(section.apiCallUrl);
+                                            setMoreInfoContent(content);    
+                                        }                                        
+                                    }}>i</button>
+                                </div>
+                            </td>
+                            <td className="SectionChildTd td_med">
+                                <div
+                                    className={colourIndicators ? "enrollmentColourDiv" : ""}
+                                    style={{ backgroundColor: colourIndicators ? enrollmentColour(section.enrolled, section.waitlist) : "" }}
+                                >
+                                    {section.waitlist ? (
+                                        <>
+                                            <span>Enrolled: {section.enrolled}</span>
+                                            <br />
+                                            <span>WL: {section.waitlist}</span>
+                                        </>
+                                    ) : (
+                                        <span>Enrolled: {section.enrolled}</span>
+                                    )}
+                                </div>
+                            </td>
+                            <td className="SectionChildTd td_med">
+                                <span>{section.learningType}</span><br/>
+                                <span>
+                                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
+                                        {section.location}
+                                    </a>
+                                </span>
+                            </td>
+                            <td className="SectionChildTd td_short">{section.days}</td>
+                            <td className="SectionChildTd td_long">{section.time}</td>        
+                        </tr>
+                    </table>
+                </tr>
+
+
+                {moreInfoMenu && 
+                    <tr>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <button onClick={() => setMoreInfoMenu(false)} style={{
+                                border: "none",
+                                font: "14px Arial, sans-serif",
+                                fontWeight: "bold",
+                                backgroundColor: "transparent",
+                                cursor: "pointer"
+                            }}>✖</button>
+                            <MoreInfoMenu moreInfoContent={moreInfoContent}/>    
+                        </div>
+                        
+                    </tr>
+                }
+                
+            </table>
         </tr>
     );
 }
