@@ -5,6 +5,10 @@ html {
     color: #EEF1F2;
 }
 
+body {
+    width: 285px;
+}
+
 .Header {
     font: 20px Arial, sans-serif;
 }
