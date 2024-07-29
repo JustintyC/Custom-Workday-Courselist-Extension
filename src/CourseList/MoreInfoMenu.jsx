@@ -28,6 +28,7 @@ return {
 
 function DisplayContent({moreInfoContent}) {
     const multiTerm = isMultiTerm(moreInfoContent.startEndDate);
+    const creditDFail = isCreditDFail(moreInfoContent.grading);
     const processedMeetingPatterns = processMeetingPatterns(moreInfoContent.meetingPatterns);
 
     return <>
@@ -66,6 +67,10 @@ function DisplayContent({moreInfoContent}) {
                     <span className='moreInfoHeading'>This is a multi-term course:</span><br/>
                     {moreInfoContent.startEndDate}
                 </>}
+
+                <span className='moreInfoHeading'>Credit/D/Fail: </span>
+                <span>{creditDFail ? "Yes" : "No"}</span>
+
             </div>
 
             <div style={{width: "50%"}}>
@@ -114,6 +119,11 @@ function isMultiTerm(startEndDate) {
     if (7 <= startMonth && startMonth <= 8) return !(7 <= endMonth && endMonth <= 8);
     if (9 <= startMonth && startMonth <= 12) return !(9 <= endMonth && endMonth <= 12);
     return false;
+}
+
+function isCreditDFail(grading) {
+    if (!grading) return false;
+    return grading.includes("Credit/D/Fail");
 }
 
 function processMeetingPatterns(patterns) {

@@ -1,0 +1,50 @@
+html {
+    width: 300px;
+    height: auto;
+    background-color: #1F1F1F;
+    color: #EEF1F2;
+}
+
+.Header {
+    font: 20px Arial, sans-serif;
+}
+
+.SecondaryHeader {
+    font: 15px Arial, sans-serif;
+}
+
+.infoTextBox {
+    border: 0px;
+    border-radius: 10px;
+    padding: 5px;
+    padding-top: 10px;
+    overflow: auto;
+    background-color: #303030;
+    height: auto;
+    font: 15px Arial, sans-serif;
+    line-height: 23px;
+}
+
+.linkButton {
+    border: 0px;
+    border-radius: 5px;
+    padding: 2px;
+    background-color: #303030;
+    overflow: none;
+    width: 75px;
+    text-align: center;
+    display: inline-block;
+    margin: 2px 1px;
+}
+
+.linkButton:hover {
+    background-color: #545658;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.buttonLink {
+    color: #EEF1F2;
+    text-decoration: none;
+    font: 15px Arial, sans-serif;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MoreInfoMenu from './MoreInfoMenu';
 import { fetchMoreInfo, parseDescription } from "./courseListUtils.js";
@@ -26,6 +26,7 @@ function Course({ courseJson }) {
             return;
         }
         setDescriptionMenu(true);
+        if (description != "Loading...") return;
         const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
         const [
             parsedDescription,
@@ -76,8 +77,8 @@ function Course({ courseJson }) {
             {visible && (
                 <div style={{ display: "block" }}>
                     {
-                        terms.map((term) => {
-                            return <Term key={uuidv4()} termJson={courseJson[term]} term={term} />;
+                        terms.map((term, idx) => {
+                            return <Term key={idx} termJson={courseJson[term]} term={term} />;
                         })
                     }
                 </div>
@@ -86,7 +87,7 @@ function Course({ courseJson }) {
     );
 }
 
-function Term({ termJson, term }) {
+const Term = memo(function Term({ termJson, term }) {
     const [visible, setVisibility] = useState(false);
 
     useEffect(() => {
@@ -125,7 +126,7 @@ function Term({ termJson, term }) {
             )}
         </>
     );
-}
+});
 
 function Mode({ modeArr, mode }) {
     const [visible, setVisibility] = useState(false);
@@ -256,6 +257,7 @@ function Section({ section }) {
                                         if (moreInfoMenu) setMoreInfoMenu(false);
                                         else {
                                             setMoreInfoMenu(true);
+                                            if (Object.keys(moreInfoContent).length > 0) return;
                                             const content = await fetchMoreInfo(section.apiCallUrl);
                                             setMoreInfoContent(content);    
                                         }                                        
@@ -271,7 +273,7 @@ function Section({ section }) {
                                         <>
                                             <span>Enrolled: {section.enrolled}</span>
                                             <br />
-                                            WL: {section.waitlist}
+                                            <span>WL: {section.waitlist}</span>
                                         </>
                                     ) : (
                                         <span>Enrolled: {section.enrolled}</span>

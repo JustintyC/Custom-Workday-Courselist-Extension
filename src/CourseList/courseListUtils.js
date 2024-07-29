@@ -129,6 +129,7 @@ export async function fetchMoreInfo(url) {
 }
 
 export function parseDescription(description) {
+    if (!description) return ["Description unavailable", null, null, null];
     const parsedDescription = description.split(/(?=Corequisite:|Equivalency:|Prerequisite:)/i)[0].trim();
 
     const prereqsMatch = description.split("Prerequisite:")[1];
