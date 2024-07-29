@@ -65,7 +65,7 @@ function DisplayContent({moreInfoContent}) {
                 
                 {multiTerm && <>
                     <span className='moreInfoHeading'>This is a multi-term course:</span><br/>
-                    {moreInfoContent.startEndDate}
+                    {moreInfoContent.startEndDate}<br/>
                 </>}
 
                 <span className='moreInfoHeading'>Credit/D/Fail: </span>

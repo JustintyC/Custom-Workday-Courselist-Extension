@@ -58,15 +58,15 @@ function Course({ courseJson }) {
                 
                 {descriptionMenu && (
                     <div className="DescriptionBox">
-                        {description}
+                        <p>{description}</p>
                         {prereqs && (
-                            <><br/><p style={{marginTop: "5px"}}>{prereqs}</p></>
+                            <p style={{marginTop: "5px"}}>{prereqs}</p>
                         )}
                         {coreqs && (
-                            <><br/><p style={{marginTop: "5px"}}>{coreqs}</p></>
+                            <p style={{marginTop: "5px"}}>{coreqs}</p>
                         )}
                         {equiv && (
-                            <><br/><p style={{marginTop: "5px"}}>{equiv}</p></>
+                            <p style={{marginTop: "5px"}}>{equiv}</p>
                         )}
                     </div>    
                 )}
