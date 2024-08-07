@@ -134,17 +134,17 @@ export function parseDescription(description) {
 
     const prereqsMatch = description.split("Prerequisite:")[1];
     const parsedPrereqs = prereqsMatch 
-        ? `Prerequisites: ${prereqsMatch.split(/(?=Corequisite:|Equivalency:)/i)[0].trim()}` 
+        ? prereqsMatch.split(/(?=Corequisite:|Equivalency:)/i)[0].trim()
         : null;
 
     const coreqsMatch = description.split("Corequisite:")[1];
     const parsedCoreqs = coreqsMatch 
-        ? `Corequisites: ${coreqsMatch.split(/(?=Prerequisite:|Equivalency:)/i)[0].trim()}` 
+        ? coreqsMatch.split(/(?=Prerequisite:|Equivalency:)/i)[0].trim()
         : null;
 
     const equivMatch = description.split("Equivalency:")[1];
     const parsedEquiv = equivMatch 
-        ? `Equivalent: ${equivMatch.split(/(?=Prerequisite:|Corequisite:)/i)[0].trim()}` 
+        ? equivMatch.split(/(?=Prerequisite:|Corequisite:)/i)[0].trim()
         : null;
 
     return [
@@ -153,4 +153,27 @@ export function parseDescription(description) {
         parsedCoreqs,
         parsedEquiv
     ];
+}
+
+export async function fetchUBCGrades(courseCode) {
+    const codeArr = courseCode.split(" ");
+    const subject = codeArr[0].split("_")[0];
+    const campus = codeArr[0].split("_")[1];
+    const number = codeArr[1];
+    const url = `https://ubcgrades.com/api/v3/course-statistics/UBC${campus}/${subject}/${number}`;
+
+    const avg5Years = await fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(data => {
+            return data.average_past_5_yrs;
+
+        }).catch(error => {
+            console.error('Error: ', error);
+        });
+    
+        return Math.round(avg5Years * 100)/100;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MoreInfoMenu from './MoreInfoMenu';
-import { fetchMoreInfo, parseDescription } from "./courseListUtils.js";
+import { fetchMoreInfo, parseDescription, fetchUBCGrades } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -17,6 +17,8 @@ function Course({ courseJson }) {
     const [prereqs, setPrereqs] = useState(null);
     const [coreqs, setCoreqs] = useState(null);
     const [equiv, setEquiv] = useState(null);
+    const [avg, setAvg] = useState(null);
+    const [dCreditFail, setDCreditFail] = useState(null);
 
     const terms = Object.keys(courseJson).slice(4);
 
@@ -38,6 +40,11 @@ function Course({ courseJson }) {
         setPrereqs(parsedPrereqs);
         setCoreqs(parsedCoreqs);
         setEquiv(parsedEquiv);
+        setDCreditFail(moreInfo.grading && moreInfo.grading.includes("Credit/D/Fail"));
+        setAvg("Loading...");
+
+        const avg5Years = await fetchUBCGrades(courseJson.code);
+        setAvg(avg5Years);
     }
 
 
@@ -60,14 +67,36 @@ function Course({ courseJson }) {
                     <div className="DescriptionBox">
                         <p>{description}</p>
                         {prereqs && (
-                            <p style={{marginTop: "5px"}}>{prereqs}</p>
+                            <p style={{marginTop: "5px"}}>
+                                <span style={{fontWeight: "Bold"}}>Prerequisites: </span>
+                                {prereqs}
+                            </p>
                         )}
                         {coreqs && (
-                            <p style={{marginTop: "5px"}}>{coreqs}</p>
+                            <p style={{marginTop: "5px"}}>
+                                <span style={{fontWeight: "Bold"}}>Corequisites: </span>
+                                {coreqs}
+                            </p>
                         )}
                         {equiv && (
-                            <p style={{marginTop: "5px"}}>{equiv}</p>
+                            <p style={{marginTop: "5px"}}>
+                                <span style={{fontWeight: "Bold"}}>Equivalent: </span>
+                                {equiv}
+                            </p>
                         )}
+                        {avg && (
+                            <p style={{marginTop: "5px"}}>
+                                <span style={{fontWeight: "Bold"}}>Average (past 5 years): </span>
+                                {avg}
+                            </p>
+                        )}
+                        {dCreditFail != null && (
+                            <p style={{marginTop: "5px"}}>
+                                <span style={{fontWeight: "Bold"}}>Credit/D/Fail: </span>
+                                {dCreditFail ? "Yes" : "No"}
+                            </p>   
+                        )}
+                        
                     </div>    
                 )}
                 
