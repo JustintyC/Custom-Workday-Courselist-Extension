@@ -6,6 +6,7 @@
 
 ## After:
 ![image](readme_images/workday_after.png)
+![image](readme_images/workday_after_2.png)
 
 ## Before:
 ![image](readme_images/workday_before.png)

@@ -46,7 +46,7 @@ function Course({ courseJson }) {
         setAvg("Loading...");
 
         const avg5Years = await fetchUBCGrades(courseJson.code);
-        if (avg5Years == "") setAvg("N/A");
+        if (avg5Years == "" || avg5Years == null) setAvg("N/A");
         else setAvg(avg5Years);
     }
 
@@ -55,7 +55,10 @@ function Course({ courseJson }) {
         <>
             <div className="CodeButtonDiv">
                 <div style={{width: "100%", display: "flex"}}>
-                    <button className="CodeButton" onClick={() => setVisibility(!visible)}>
+                    <button className="CodeButton" onClick={() => {
+                        setVisibility(!visible);
+                        if (descriptionMenu && visible) toggleDescriptionMenu();
+                    }}>
                         <span style={{color: "#CFD4D7", marginRight: "10px"}}>{visible? "▼" : "▶"}</span>
                         {`${courseJson["code"]} - ${courseJson["name"]} | ${courseJson["credits"]}`}
                     </button>
@@ -327,7 +330,7 @@ function Section({ section }) {
                                 </span>
                             </td>
                             <td className="SectionChildTd td_short">{section.days}</td>
-                            <td className="SectionChildTd td_long">{section.time}</td>        
+                            <td className="SectionChildTd td_long">{section.time}</td>
                         </tr>
                     </table>
                 </tr>
@@ -343,7 +346,7 @@ function Section({ section }) {
                                 backgroundColor: "transparent",
                                 cursor: "pointer"
                             }}>✖</button>
-                            <MoreInfoMenu moreInfoContent={moreInfoContent}/>    
+                            <MoreInfoMenu moreInfoContent={moreInfoContent}/>
                         </div>
                         
                     </tr>

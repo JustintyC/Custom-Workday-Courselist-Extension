@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { parseCourses } from "./parseCourses.js";
 import CourseList from "./CourseList";
 import "./courseListStyles.css"
-import { workdayDomComponents, grabCourseListContainer } from "../utils.js";
+import { workdayDomComponents, grabCourseListContainer, grabBarAboveList } from "../utils.js";
 
 // contains the setting menu and new course list
 export default function CourseListContainer() {
@@ -48,10 +48,12 @@ export default function CourseListContainer() {
             // check if courses really changed before updating courses state
             if (foundCourses.length !== courses.length) {
               setCourses(foundCourses);
+              setRenderedCoursesCount(foundCourses.length);
             } else {
               for (let i = 0; i < foundCourses.length; i++) {
                 if (foundCourses[i] !== courses[i]) {
                   setCourses(foundCourses);
+                  setRenderedCoursesCount(foundCourses.length);
                   break;
                 }
               }
@@ -120,3 +122,8 @@ export default function CourseListContainer() {
   )
 }
 
+function setRenderedCoursesCount(count) {
+  const barAboveList = grabBarAboveList();
+  const numResultsText = barAboveList.firstChild;
+  numResultsText.textContent = `${numResultsText.textContent.split("|")[0].trim()} | ${count} Shown`;
+}

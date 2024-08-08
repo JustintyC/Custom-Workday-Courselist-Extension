@@ -173,7 +173,9 @@ export async function fetchUBCGrades(courseCode) {
 
         }).catch(error => {
             console.error('Error: ', error);
+            return null;
         });
+        if (avg5Years == null) return null;
     
         return Math.round(avg5Years * 100)/100;
 }

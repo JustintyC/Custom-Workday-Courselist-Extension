@@ -67,6 +67,11 @@ function DisplayContent({moreInfoContent}) {
                     {moreInfoContent.startEndDate}<br/>
                 </>}
 
+                {!multiTerm && <>
+                    <span className='moreInfoHeading'>Start/End date:</span><br/>
+                    {moreInfoContent.startEndDate}<br/>
+                </>}
+
             </div>
 
             <div style={{width: "50%"}}>
