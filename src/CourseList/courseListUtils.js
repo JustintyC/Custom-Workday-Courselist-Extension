@@ -123,7 +123,7 @@ export async function fetchMoreInfo(url) {
             console.error('Error: ', error);
         });
 
-    console.log(out);
+    // console.log(out);
         
     return out;
 }
@@ -176,4 +176,40 @@ export async function fetchUBCGrades(courseCode) {
         });
     
         return Math.round(avg5Years * 100)/100;
+}
+
+export function getUBCGradesURL(courseCode) {
+    const codeArr = courseCode.split(" ");
+    const subject = codeArr[0].split("_")[0];
+    const campus = codeArr[0].split("_")[1];
+    const number = codeArr[1];
+    return `https://ubcgrades.com/statistics-by-course#UBC${campus}-${subject}-${number}`;
+}
+
+// sort terms in this order: W1, W2, S1, S2
+// insertion sort because input size is small its fine
+export function sortTerms(terms) {
+    const termValueMap = {
+        W1: 1,
+        W2: 2,
+        S1: 3,
+        S2: 4
+    }
+
+    // slides terms[i] to correct position
+    function slide(i) {
+        const iVal = termValueMap[terms[i]];
+        while (i > 0 && termValueMap[terms[i - 1]] > iVal) {
+            const temp = terms[i];
+            terms[i] = terms[i - 1];
+            terms[i - 1] = temp;
+            i--;
+        }
+    }
+
+    for (let i = 1; i < terms.length; i++) {
+        slide(i);
+    }
+
+    return terms;
 }

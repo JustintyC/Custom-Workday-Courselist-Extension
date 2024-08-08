@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MoreInfoMenu from './MoreInfoMenu';
-import { fetchMoreInfo, parseDescription, fetchUBCGrades } from "./courseListUtils.js";
+import { fetchMoreInfo, parseDescription, fetchUBCGrades, getUBCGradesURL, sortTerms } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -20,7 +20,9 @@ function Course({ courseJson }) {
     const [avg, setAvg] = useState(null);
     const [dCreditFail, setDCreditFail] = useState(null);
 
-    const terms = Object.keys(courseJson).slice(4);
+    let terms = Object.keys(courseJson).slice(4);
+    terms = sortTerms(terms);
+    const UBCGradesURL = getUBCGradesURL(courseJson.code);
 
     async function toggleDescriptionMenu() {
         if (descriptionMenu) {
@@ -44,7 +46,8 @@ function Course({ courseJson }) {
         setAvg("Loading...");
 
         const avg5Years = await fetchUBCGrades(courseJson.code);
-        setAvg(avg5Years);
+        if (avg5Years == "") setAvg("N/A");
+        else setAvg(avg5Years);
     }
 
 
@@ -88,6 +91,10 @@ function Course({ courseJson }) {
                             <p style={{marginTop: "5px"}}>
                                 <span style={{fontWeight: "Bold"}}>Average (past 5 years): </span>
                                 {avg}
+                                <a href={UBCGradesURL} target="_blank" rel="noopener noreferrer"
+                                style={{textDecoration: "None"}} title="UBCGrades">
+                                    🔗
+                                </a>
                             </p>
                         )}
                         {dCreditFail != null && (
@@ -278,7 +285,8 @@ function Section({ section }) {
                                     <div className="AddButtonGoHere" id={section.sectionCode}></div>
                                     
                                     <div className="SectionChildTd_courseName">
-                                        <a href={section.url} target="_blank" rel="noopener noreferrer">
+                                        <a href={section.url} target="_blank" rel="noopener noreferrer"
+                                        title="View Course Section">
                                             {section.sectionCode}
                                         </a>
                                     </div>
@@ -290,7 +298,7 @@ function Section({ section }) {
                                             const content = await fetchMoreInfo(section.apiCallUrl);
                                             setMoreInfoContent(content);    
                                         }                                        
-                                    }}>i</button>
+                                    }} title="Toggle Section Info">i</button>
                                 </div>
                             </td>
                             <td className="SectionChildTd td_med">
@@ -312,7 +320,8 @@ function Section({ section }) {
                             <td className="SectionChildTd td_med">
                                 <span>{section.learningType}</span><br/>
                                 <span>
-                                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer">
+                                    <a href={section.locationURL} target="_blank" rel="noopener noreferrer"
+                                    title="View Location">
                                         {section.location}
                                     </a>
                                 </span>
