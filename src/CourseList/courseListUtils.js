@@ -1,4 +1,3 @@
-
 // calls workday's api and returns advanced course info as a json
 export async function fetchMoreInfo(url) {
     const out = await fetch(url)
@@ -165,14 +164,15 @@ export async function fetchUBCGrades(courseCode) {
     const avg5Years = await fetch(url)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                // throw new Error('Network response was not ok');
+                console.log("UBCGrades response was not ok");
             }
             return response.json();
         }).then(data => {
             return data.average_past_5_yrs;
 
         }).catch(error => {
-            console.error('Error: ', error);
+            // console.log('UBCGrades: ', error);
             return null;
         });
         if (avg5Years == null) return null;
@@ -200,8 +200,8 @@ export function sortTerms(terms) {
 
     // slides terms[i] to correct position
     function slide(i) {
-        const iVal = termValueMap[terms[i]];
-        while (i > 0 && termValueMap[terms[i - 1]] > iVal) {
+        const iVal = termValueMap[terms[i].split("-")[0].trim()];
+        while (i > 0 && termValueMap[terms[i - 1].split("-")[0].trim()] > iVal) {
             const temp = terms[i];
             terms[i] = terms[i - 1];
             terms[i - 1] = temp;
@@ -214,4 +214,20 @@ export function sortTerms(terms) {
     }
 
     return terms;
+}
+
+// sort modes so that lecture is always at the front
+export function sortModes(modes) {
+    if (modes.length == 0) return modes;
+    if (modes[0] === "Lecture") return modes;
+
+    for (let i = 0; i < modes.length; i++) {
+        if (modes[i] === "Lecture") {
+            const temp = modes[i];
+            modes[i] = modes[0];
+            modes[0] = temp;
+            break;
+        }
+    }
+    return modes;
 }

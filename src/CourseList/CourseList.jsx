@@ -1,7 +1,13 @@
 import React, { useState, useEffect, memo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import MoreInfoMenu from './MoreInfoMenu';
-import { fetchMoreInfo, parseDescription, fetchUBCGrades, getUBCGradesURL, sortTerms } from "./courseListUtils.js";
+import { 
+    fetchMoreInfo, 
+    parseDescription, 
+    fetchUBCGrades, 
+    getUBCGradesURL, 
+    sortTerms,
+    sortModes } from "./courseListUtils.js";
 
 export default function CourseList({ coursesArr }) {
     return (coursesArr.map((courseJson) => {
@@ -146,7 +152,8 @@ const Term = memo(function Term({ termJson, term }) {
         }
     }, []);
 
-    const modes = Object.keys(termJson);
+    let modes = Object.keys(termJson);
+    modes = sortModes(modes);
 
     return (
         <>
