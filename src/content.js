@@ -2,7 +2,7 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import CourseListContainer from "./CourseList/CourselistContainer";
+import CourseListContainer from "./CourseList/CourseListContainer";
 import SettingsMenu from "./Settings/SettingsMenu";
 import BottomMenu from "./CourseList/BottomMenu.jsx";
 import { workdayDomComponents, grabCourseListContainer }  from "./utils.js";

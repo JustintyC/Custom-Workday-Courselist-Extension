@@ -103,12 +103,12 @@ export function parseCourses(courses) {
             
             const detailsTextArr = promptOptions[1].textContent.split("|");
             if (detailsTextArr.length == 4) { // location present
-                const fullLocation = detailsTextArr[0];
-                location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ")[2]}`;
+                const fullLocation = detailsTextArr[0].trim();
+                location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ").pop()}`;
                 const locationArr = location.split(" ");
-                campus === "V" 
-                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`
-                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${locationArr[0]}-${locationArr[1]}`;
+                campus === "V"
+                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[locationArr.length - 1]}`
+                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${locationArr[0]}-${locationArr[locationArr.length - 1]}`;
             }
             days = detailsTextArr[detailsTextArr.length - 3].trim();
             time = detailsTextArr[detailsTextArr.length - 2].trim();
@@ -143,6 +143,7 @@ export function parseCourses(courses) {
             term = "Unspecified";
             days = "";
             time = "";
+            console.log(error);
         }
 
         // URLs
