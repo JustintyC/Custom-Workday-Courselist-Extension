@@ -143,7 +143,6 @@ export function parseCourses(courses) {
             term = "Unspecified";
             days = "";
             time = "";
-            console.log(error);
         }
 
         // URLs
