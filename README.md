@@ -1,6 +1,4 @@
-# Notice: Versions 1.1.0 and below no longer work. Please update to versions 1.1.1 and above.
-
-### Current repository version: 1.2.1
+### Current repository version: 1.2.3
 
 ### Enhances Workday's messy course search list by compacting and categorizing courses, as well as displaying course descriptions, averages, instructors, and more through an intuitive layout on the same page.
 
@@ -30,7 +28,7 @@
 
 (credit to unionpie for installation instructions)
 
-# Known issues
-- Workday only renders 50 sections at once, and the extension can only see the sections Workday has rendered. If the table is incomplete, the user must scroll to the bottom of the page to force workday to fetch and render more sections.
-- Multi-term courses are not displayed correctly since Workday does not properly indicate which courses span multiple terms without having to view course details.
-- Some courses are placed under the "Unspecified" term. This is a result of Workday not providing course details in its original layout.
+# Note
+- Workday only renders 50 sections at once, and the extension can only see the sections Workday has rendered. If the table is incomplete, please scroll to the bottom of the page to force Workday to render more sections.
+- Many multi-term courses are not displayed correctly since Workday does not properly indicate which courses span multiple terms in its original layout. To confirm the length of a course, please press the (i) button for any of its sections and verify their start/end dates.
+- Some courses are placed under the "Unspecified" term. This is a result of Workday not providing start/end dates properly in its original layout. Please check the start/end dates of such courses by pressing the (i) button for any of its sections.
