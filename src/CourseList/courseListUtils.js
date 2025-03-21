@@ -87,6 +87,7 @@ export async function fetchMoreInfo(url) {
                         totalCapacity = json.text;
                         break;
                     case "Unreserved Seats Available":
+                    case "Seats Available":
                         availUnreserved = json.value;
                         break;
                     case "Reserved Seats Available":
