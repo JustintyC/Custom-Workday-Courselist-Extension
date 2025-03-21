@@ -305,8 +305,13 @@ function Section({ section }) {
                                         else {
                                             setMoreInfoMenu(true);
                                             if (Object.keys(moreInfoContent).length > 0) return;
-                                            const content = await fetchMoreInfo(section.apiCallUrl);
-                                            setMoreInfoContent(content);    
+                                            try {
+                                                const content = await fetchMoreInfo(section.apiCallUrl);
+                                                setMoreInfoContent(content);        
+                                            } catch (e) {
+                                                alert("An error occured receiving course information from Workday. Please contact the developer.");
+                                            }
+                                            
                                         }                                        
                                     }} title="Toggle Section Info">i</button>
                                 </div>

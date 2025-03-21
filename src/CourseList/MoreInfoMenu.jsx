@@ -87,7 +87,7 @@ function DisplayContent({moreInfoContent}) {
 
                 <span className="moreInfoHeading">Reserved seats info: </span>
                 {
-                    moreInfoContent.reservedDist ? 
+                    moreInfoContent.reservedDist.length > 0 ? 
                     moreInfoContent.reservedDist.map((item, index) => {
                         let parsedItem = item.replaceAll("- reserved for Students In -", "-")
                         .replaceAll("- (Vancouver)", "").replaceAll("- (Okanagan)", "")

@@ -140,7 +140,7 @@ export function parseCourses(courses) {
             } else term = startTerm;
         } catch (error) {
             // section details is empty
-            term = "Unspecified";
+            term = "Unspecified Term";
             days = "";
             time = "";
         }
