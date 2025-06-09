@@ -1,3 +1,5 @@
+import { PARSEERRORSTRING } from "../utils";
+
 // calls workday's api and returns advanced course info as a json
 /**
  * 
@@ -130,10 +132,15 @@ export async function fetchMoreInfo(url) {
 
             if (reservedDistArr) {
                 for (let i = 0; i < reservedDistArr.length - 1; i++) {
-                    const cellsMap = reservedDistArr[i].cellsMap;
+                    try {
+                        const cellsMap = reservedDistArr[i].cellsMap;
                         // Available of Capacity - Eligibility
-                        const parsedText = `${cellsMap["201.2"].text} of ${cellsMap["201.3"].text} - ${cellsMap["201.1"].instances[0]["text"].split("-")[1].trim()}`;
+                        const parsedText = `${cellsMap["201.2"].text} of ${cellsMap["201.3"].text} - ${cellsMap["201.1"].instances[0]["text"]}`;
                         reservedDist.push(parsedText);
+                    } catch {
+                        reservedDist.push(PARSEERRORSTRING);
+                    }
+                    
                 }
             }
             

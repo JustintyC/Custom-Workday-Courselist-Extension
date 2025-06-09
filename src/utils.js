@@ -1,3 +1,5 @@
+export const PARSEERRORSTRING = "An error occured while fetching this field."
+
 export const workdayDomComponents = {
     // "courseListContainer": 'div.WF-N.WJYN',
     "courseListContainerParent": 'div[role="region"][aria-label="Search Results"]',
