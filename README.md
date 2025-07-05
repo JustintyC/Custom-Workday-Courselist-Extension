@@ -20,7 +20,7 @@
 5. Select the unzipped file from before
 
 # Installation on Firefox
-1. Download `Better UBC Workday Courselist Firefox.zip`
+1. Download `UBC Workday Better Courselist Firefox.zip`
 2. Unzip the file
 3. Go to about:debugging then choose `This Firefox` from the menu on the left
 4. Click on `Load Temporary Add-on…`
