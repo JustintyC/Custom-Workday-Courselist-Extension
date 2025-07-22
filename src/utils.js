@@ -1,4 +1,5 @@
 export const PARSEERRORSTRING = "An error occured while fetching this field."
+export const SHORTERRORSTRING = "Error";
 
 export const workdayDomComponents = {
     // "courseListContainer": 'div.WF-N.WJYN',
