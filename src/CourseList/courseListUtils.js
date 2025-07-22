@@ -52,12 +52,12 @@ export async function fetchMoreInfo(url) {
             - unreserved seats available (e.g. "4 of 45")
             - reserved seats available (e.g. "13 of 152")
             */
-            const generalInformationArr = data["body"]["children"][0]["sections"][0]["children"][0]["children"];
+            const generalInformationArr = data["body"]?.["children"]?.[0]?.["sections"]?.[0]?.["children"]?.[0]?.["children"];
 
             /*
             reservedDistArr: contains reserved seats distribution, requires further parsing
             */
-            const reservedDistArr = data["body"]["children"][0]["sections"][0]["children"][1]?.["rows"];
+            const reservedDistArr = data["body"]?.["children"]?.[0]?.["sections"]?.[0]?.["children"]?.[1]?.["rows"];
 
             /*
             additionalDetailsArr: contains
@@ -72,18 +72,18 @@ export async function fetchMoreInfo(url) {
             - course tags (course level, credit/d/fail, etc)
             - notes (if available)
             */
-            const additionalDetailsArr = data["body"]["children"][0]["sections"][1]["children"][0]["children"][0]["children"][0]["children"];
+            const additionalDetailsArr = data["body"]?.["children"]?.[0]?.["sections"][1]?.["children"]?.[0]?.["children"]?.[0]?.["children"][0]?.["children"];
 
             for (let json of generalInformationArr) {
                 switch(json.label) {
                     case "Description":
-                        description = json.value.replace(/<\/?[a-zA-Z]+>/g, "");
+                        description = json.value?.replace(/<\/?[a-zA-Z]+>/g, "");
                         break;
                     case "Start/End Date":
                         startEndDate = json.value;
                         break;
                     case "Status":
-                        status = json.instances[0].text;
+                        status = json.instances[0]?.text;
                         break;
                     case "Total Section Capacity":
                         totalCapacity = json.text;
@@ -110,19 +110,19 @@ export async function fetchMoreInfo(url) {
             for (let json of additionalDetailsArr) {
                 switch(json.label) {
                     case "Grading Basis":
-                        grading = json.instances[0].text;
+                        grading = json.instances[0]?.text;
                         break;
                     case "Other Instructional Formats":
-                        otherFormats = json.instances[0].text;
+                        otherFormats = json.instances[0]?.text;
                         break;
                     case "Meeting Patterns":
-                        meetingPatterns = json.instances && json.instances.map(instance => instance.text);
+                        meetingPatterns = json.instances?.map(instance => instance.text);
                         break;
                     case "Course Tags":
-                        courseTags = json.instances && json.instances.map(instance => instance.text);
+                        courseTags = json.instances?.map(instance => instance.text);
                         break;
                     case "Notes":
-                        notes = json.value.replace(/<\/?[a-zA-Z]+>/g, "");
+                        notes = json.value?.replace(/<\/?[a-zA-Z]+>/g, "");
                         break;
                     default:
                         break;
@@ -161,6 +161,20 @@ export async function fetchMoreInfo(url) {
         })
         .catch(error => {
             console.error('Error: ', error);
+            return {
+                status: null,
+                startEndDate: null,
+                grading: null,
+                description: null,
+                otherFormats: null,
+                courseTags: null,
+                availUnreserved: null,
+                availReserved: null,
+                meetingPatterns: null,
+                instructors: null,
+                reservedDist: null,
+                notes: null
+            }
         });
 
     // console.log(out);
@@ -196,6 +210,7 @@ export function parseDescription(description) {
 }
 
 export async function fetchUBCGrades(courseCode) {
+    if (!courseCode) return null;
     const codeArr = courseCode.split(" ");
     const subject = codeArr[0].split("_")[0];
     const campus = codeArr[0].split("_")[1];
@@ -222,6 +237,7 @@ export async function fetchUBCGrades(courseCode) {
 }
 
 export function getUBCGradesURL(courseCode) {
+    if (!courseCode) return null;
     const codeArr = courseCode.split(" ");
     const subject = codeArr[0].split("_")[0];
     const campus = codeArr[0].split("_")[1];

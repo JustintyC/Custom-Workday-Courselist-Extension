@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { SHORTERRORSTRING } from '../utils';
 
 export default function MoreInfoMenu({moreInfoContent}) {
     return <div className="moreInfoMenu">
@@ -69,25 +70,23 @@ function DisplayContent({moreInfoContent}) {
 
                 {!multiTerm && <>
                     <span className='moreInfoHeading'>Start/End date:</span><br/>
-                    {moreInfoContent.startEndDate}<br/>
+                    {moreInfoContent.startEndDate || 'Unavailable'}<br/>
                 </>}
 
             </div>
 
             <div style={{width: "50%"}}>
                 <span className="moreInfoHeading">Available unreserved: </span>
-                {moreInfoContent.availUnreserved != null ? 
-                moreInfoContent.availUnreserved : "Unavailable"}
+                {moreInfoContent.availUnreserved || "Unavailable"}
                 <br/>
 
                 <span className="moreInfoHeading">Available reserved: </span>
-                {moreInfoContent.availReserved != null ? 
-                moreInfoContent.availReserved : "Unavailable"}
+                {moreInfoContent.availReserved || "Unavailable"}
                 <br/>
 
                 <span className="moreInfoHeading">Reserved seats info: </span>
                 {
-                    moreInfoContent.reservedDist.length > 0 ? 
+                    moreInfoContent.reservedDist && moreInfoContent.reservedDist.length > 0 ? 
                     moreInfoContent.reservedDist.map((item, index) => {
                         let parsedItem = item.replaceAll("- reserved for Students In -", "-")
                         .replaceAll("- (Vancouver)", "").replaceAll("- (Okanagan)", "")
@@ -112,6 +111,7 @@ function DisplayContent({moreInfoContent}) {
 }
 
 function isMultiTerm(startEndDate) {
+    if (!startEndDate) return false;
     const startMonth = parseInt(startEndDate.split(" - ")[0].split("-")[1]);
     const endMonth   = parseInt(startEndDate.split(" - ")[1].split("-")[1]);
 
