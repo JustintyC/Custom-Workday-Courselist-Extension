@@ -158,24 +158,24 @@ export async function fetchMoreInfo(url) {
                 reservedDist: reservedDist,
                 notes: notes
             };
-        })
-        .catch(error => {
-            console.error('Error: ', error);
-            return {
-                status: null,
-                startEndDate: null,
-                grading: null,
-                description: null,
-                otherFormats: null,
-                courseTags: null,
-                availUnreserved: null,
-                availReserved: null,
-                meetingPatterns: null,
-                instructors: null,
-                reservedDist: null,
-                notes: null
-            }
         });
+        // .catch(error => {
+        //     console.error('Error: ', error);
+        //     return {
+        //         status: null,
+        //         startEndDate: null,
+        //         grading: null,
+        //         description: null,
+        //         otherFormats: null,
+        //         courseTags: null,
+        //         availUnreserved: null,
+        //         availReserved: null,
+        //         meetingPatterns: null,
+        //         instructors: null,
+        //         reservedDist: null,
+        //         notes: null
+        //     }
+        // });
 
     // console.log(out);
         

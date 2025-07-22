@@ -37,23 +37,33 @@ function Course({ courseJson }) {
         }
         setDescriptionMenu(true);
         if (description != "Loading...") return;
-        const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
-        const [
-            parsedDescription,
-            parsedPrereqs,
-            parsedCoreqs,
-            parsedEquiv
-        ] = parseDescription(moreInfo.description);
-        setDescription(parsedDescription);
-        setPrereqs(parsedPrereqs);
-        setCoreqs(parsedCoreqs);
-        setEquiv(parsedEquiv);
-        setDCreditFail(moreInfo.grading && moreInfo.grading.includes("Credit/D/Fail"));
-        setAvg("Loading...");
+        try {
+            const moreInfo = await fetchMoreInfo(courseJson.sampleApi);
+            const [
+                parsedDescription,
+                parsedPrereqs,
+                parsedCoreqs,
+                parsedEquiv
+            ] = parseDescription(moreInfo.description);
+            setDescription(parsedDescription);
+            setPrereqs(parsedPrereqs);
+            setCoreqs(parsedCoreqs);
+            setEquiv(parsedEquiv);
+            setDCreditFail(moreInfo.grading && moreInfo.grading.includes("Credit/D/Fail"));
+            setAvg("Loading...");            
+        } catch {
+            alert("An error occured receiving course information from Workday. Please contact the developer.");
+        }
 
-        const avg5Years = await fetchUBCGrades(courseJson.code);
-        if (avg5Years == "" || avg5Years == null) setAvg("N/A");
-        else setAvg(avg5Years);
+        try {
+            const avg5Years = await fetchUBCGrades(courseJson.code);
+            if (avg5Years == "" || avg5Years == null) setAvg("N/A");
+            else setAvg(avg5Years);    
+        } catch {
+            alert("An error occured receiving course information from UBCGrades. Please contact the developer.");
+        }
+
+        
     }
 
 
