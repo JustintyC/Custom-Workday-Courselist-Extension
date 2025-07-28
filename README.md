@@ -1,4 +1,4 @@
-### Current repository version: 1.2.6
+### Current repository version: 1.2.7
 
 ### Enhances Workday's messy course search list by compacting and categorizing courses, as well as displaying course descriptions, averages, instructors, and more through an intuitive layout on the same page.
 
