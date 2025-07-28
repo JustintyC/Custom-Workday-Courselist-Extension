@@ -16,7 +16,6 @@ import { PARSEERRORSTRING } from "../utils";
         meetingPatterns,
         instructors,
         reservedDist,
-        notes
  */
 export async function fetchMoreInfo(url) {
     const out = await fetch(url)
@@ -37,44 +36,12 @@ export async function fetchMoreInfo(url) {
             let meetingPatterns = null;
             let instructors = null;
             let reservedDist = [];
-            let notes = null;
-            let totalCapacity = null;
 
-            /*
-            generalInformationArr: contains
-            - course info (code, title)
-            - description, which contains prereqs/coreqs
-            - academic period (e.g. "2024-25 Winter Term 2 (UBC-V)")
-            - instructors
-            - start/end date (e.g. "2025-01-06 - 2025-04-08")
-            - status (open/closed etc)
-            - total section capacity (as string and int)
-            - unreserved seats available (e.g. "4 of 45")
-            - reserved seats available (e.g. "13 of 152")
-            */
-            const generalInformationArr = data["body"]?.["children"]?.[0]?.["sections"]?.[0]?.["children"]?.[0]?.["children"];
+            const generalInfo = data.body?.children?.[0]?.children?.[0]?.children;
+            const additionalInfo = data.body?.children?.[0]?.children?.[1]?.children?.[0]?.children;
+            const reservedDistArr = data.body?.children?.[1]?.sections?.[0]?.children?.[0]?.rows;
 
-            /*
-            reservedDistArr: contains reserved seats distribution, requires further parsing
-            */
-            const reservedDistArr = data["body"]?.["children"]?.[0]?.["sections"]?.[0]?.["children"]?.[1]?.["rows"];
-
-            /*
-            additionalDetailsArr: contains
-            - credits (e.g. "4 Credits")
-            - grading basis (C/D/F, Graded, etc)
-            - waitlist spots (if available)
-            - instructional format (lecture, lab, etc)
-            - other instructional formats (labs/discussions)
-            - delivery mode
-            - campus
-            - full meeting pattern text
-            - course tags (course level, credit/d/fail, etc)
-            - notes (if available)
-            */
-            const additionalDetailsArr = data["body"]?.["children"]?.[0]?.["sections"][1]?.["children"]?.[0]?.["children"]?.[0]?.["children"][0]?.["children"];
-
-            for (let json of generalInformationArr) {
+            for (let json of generalInfo) {
                 switch(json.label) {
                     case "Description":
                         description = json.value?.replace(/<\/?[a-zA-Z]+>/g, "");
@@ -83,50 +50,48 @@ export async function fetchMoreInfo(url) {
                         startEndDate = json.value;
                         break;
                     case "Status":
-                        status = json.instances[0]?.text;
-                        break;
-                    case "Total Section Capacity":
-                        totalCapacity = json.text;
+                        status = json.instances?.[0]?.text;
                         break;
                     case "Unreserved Seats Available":
-                    case "Seats Available":
                         availUnreserved = json.value;
                         break;
                     case "Reserved Seats Available":
                         availReserved = json.value;
                         break;
+                    case "Instructor Teaching":
+                        const instructorsArr = json.instances;
+                        if (instructorsArr) {
+                            instructors = instructorsArr.map(i => i.text);
+                        }
+                        break;
                     default:
-                        if (json.widget && json.widget === "panel") {
-                            // instructors: only json with widget = panel
-                            const instructorsArr = json.children?.[0]?.instances;
-                            if (instructorsArr) {
-                                instructors = instructorsArr.map(instructorJson => instructorJson.text);
+                        // Instructor is inside a nested panel
+                        if (json.widget === "panel") {
+                            const nested = json.children?.[0]?.instances;
+                            if (nested) {
+                                instructors = nested.map(inst => inst.text);
                             }
                         }
                         break;
                 }
             }
 
-            for (let json of additionalDetailsArr) {
-                switch(json.label) {
+            for (let json of additionalInfo || []) {
+                switch (json.label) {
                     case "Grading Basis":
-                        grading = json.instances[0]?.text;
+                        grading = json.instances?.map(g => g.text);
                         break;
                     case "Other Instructional Formats":
-                        otherFormats = json.instances[0]?.text;
+                        otherFormats = json.instances?.map(fmt => fmt.text);
                         break;
                     case "Meeting Patterns":
-                        meetingPatterns = json.instances?.map(instance => instance.text);
+                        meetingPatterns = json.instances?.map(mp => mp.text);
                         break;
                     case "Course Tags":
-                        courseTags = json.instances?.map(instance => instance.text);
-                        break;
-                    case "Notes":
-                        notes = json.value?.replace(/<\/?[a-zA-Z]+>/g, "");
+                        courseTags = json.instances?.map(tag => tag.text);
                         break;
                     default:
                         break;
-                    
                 }
             }
 
@@ -134,53 +99,32 @@ export async function fetchMoreInfo(url) {
                 for (let i = 0; i < reservedDistArr.length - 1; i++) {
                     try {
                         const cellsMap = reservedDistArr[i].cellsMap;
-                        // Available of Capacity - Eligibility
                         const parsedText = `${cellsMap["201.2"].text} of ${cellsMap["201.3"].text} - ${cellsMap["201.1"].instances[0]["text"]}`;
                         reservedDist.push(parsedText);
                     } catch {
                         reservedDist.push(PARSEERRORSTRING);
                     }
-                    
                 }
             }
-            
+
             return {
-                status: status,
-                startEndDate: startEndDate,
-                grading: grading,
-                description: description,
-                otherFormats: otherFormats,
-                courseTags: courseTags,
-                availUnreserved: availUnreserved,
-                availReserved: availReserved,
-                meetingPatterns: meetingPatterns,
-                instructors: instructors,
-                reservedDist: reservedDist,
-                notes: notes
+                status,
+                startEndDate,
+                grading,
+                description,
+                otherFormats,
+                courseTags,
+                availUnreserved,
+                availReserved,
+                meetingPatterns,
+                instructors,
+                reservedDist
             };
         });
-        // .catch(error => {
-        //     console.error('Error: ', error);
-        //     return {
-        //         status: null,
-        //         startEndDate: null,
-        //         grading: null,
-        //         description: null,
-        //         otherFormats: null,
-        //         courseTags: null,
-        //         availUnreserved: null,
-        //         availReserved: null,
-        //         meetingPatterns: null,
-        //         instructors: null,
-        //         reservedDist: null,
-        //         notes: null
-        //     }
-        // });
 
-    // console.log(out);
-        
     return out;
 }
+
 
 export function parseDescription(description) {
     if (!description) return ["Description unavailable", null, null, null];
