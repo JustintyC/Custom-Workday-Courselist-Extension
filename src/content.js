@@ -56,18 +56,18 @@ function handleDOMChanges() {
             }
 
             // third root for bottom of screen menu
-            const check3 = document.getElementById("bottomMenu-root");
-            if (!check3) {
-                const body = document.querySelector("body");
-                const injection3 = document.createElement("div");
-                injection3.id = "bottomMenu-root";
-                body.prepend(injection3);
+            // const check3 = document.getElementById("bottomMenu-root");
+            // if (!check3) {
+            //     const body = document.querySelector("body");
+            //     const injection3 = document.createElement("div");
+            //     injection3.id = "bottomMenu-root";
+            //     body.prepend(injection3);
 
-                const container3 = document.getElementById("bottomMenu-root");
-                const root3 = createRoot(container3);
+            //     const container3 = document.getElementById("bottomMenu-root");
+            //     const root3 = createRoot(container3);
 
-                root3.render(<BottomMenu/>);
-            }
+            //     root3.render(<BottomMenu/>);
+            // }
             
 
             reconnectObserver();

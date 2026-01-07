@@ -60,10 +60,10 @@ export default function CourseListContainer() {
             }
 
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
       } else {
-        console.log("courseListContainer not found (CourseListContainer.jsx)");
+        console.error("courseListContainer not found (CourseListContainer.jsx)");
       }
     }
 

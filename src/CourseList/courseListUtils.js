@@ -99,9 +99,11 @@ export async function fetchMoreInfo(url) {
                 for (let i = 0; i < reservedDistArr.length - 1; i++) {
                     try {
                         const cellsMap = reservedDistArr[i].cellsMap;
-                        const parsedText = `${cellsMap["201.2"].text} of ${cellsMap["201.3"].text} - ${cellsMap["201.1"].instances[0]["text"]}`;
+                        const parsedText = `${cellsMap["203.2"].text} of ${cellsMap["203.3"].text} - ${cellsMap["203.1"].instances[0]["text"]}`;
                         reservedDist.push(parsedText);
-                    } catch {
+                    } catch (error) {
+                        console.error(error);
+                        console.error(reservedDistArr);
                         reservedDist.push(PARSEERRORSTRING);
                     }
                 }
@@ -165,7 +167,7 @@ export async function fetchUBCGrades(courseCode) {
         .then(response => {
             if (!response.ok) {
                 // throw new Error('Network response was not ok');
-                console.log("UBCGrades response was not ok");
+                console.error("UBCGrades response was not ok");
             }
             return response.json();
         }).then(data => {
