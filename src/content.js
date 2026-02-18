@@ -1,4 +1,4 @@
-// run npx webpack --config webpack.config.js to build project into dist 
+// run `npx webpack --config webpack.config.js` to build project into dist 
 
 import React from "react";
 import { createRoot } from "react-dom/client";

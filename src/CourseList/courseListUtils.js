@@ -99,8 +99,16 @@ export async function fetchMoreInfo(url) {
                 for (let i = 0; i < reservedDistArr.length - 1; i++) {
                     try {
                         const cellsMap = reservedDistArr[i].cellsMap;
-                        const parsedText = `${cellsMap["203.2"].text} of ${cellsMap["203.3"].text} - ${cellsMap["203.1"].instances[0]["text"]}`;
-                        reservedDist.push(parsedText);
+                        const vals = Object.values(cellsMap);
+                        const avail = vals.find(v => v.propertyName === "wd:Numeric_Value_A_minus_Numeric_Value_B");
+                        const cap = vals.find(v => v.propertyName === "wd:Reserved_Capacity_Line_Capacity");
+                        const rule = vals.find(v => v.propertyName === "wd:Reserved_Capacity_Line_with_Until_Date_DisplayID--IS");
+
+                        if (avail && cap && rule) {
+                            reservedDist.push(`${avail.text} of ${cap.text} - ${rule.instances[0].text}`);
+                        } else {
+                            throw new Error("Missing expected reserved seat fields");
+                        }
                     } catch (error) {
                         console.error(error);
                         console.error(reservedDistArr);
