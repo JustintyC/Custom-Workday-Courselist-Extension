@@ -97,19 +97,27 @@ export function parseCourses(courses) {
         let term;
         let days;
         let time;
+        
+        // section details text: [campus] | [building] | [floor] | [room] | [days] | [time] | [date range]
+        // location may or may not be present            
+        const detailsTextArr = promptOptions[1].textContent.split("|");
+
         try {
-            // section details text: [location] | [days] | [time] | [date range]
-            // location may or may not be present            
+            // const fullLocation = detailsTextArr[0].trim();
+            // location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ").pop()}`;
+            // const locationArr = location.split(" ");
+            const building = detailsTextArr[1].split("(")[1].split(")")[0];
+            const room = detailsTextArr[3].split(":")[1].trim();
+            location = `${building} ${room}`;
+
+            campus === "V"
+                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${building.toLowerCase()}-${room}`
+                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${building.toLowerCase()}-${room}`;                
+        } catch (error) {
             
-            const detailsTextArr = promptOptions[1].textContent.split("|");
-            if (detailsTextArr.length == 4) { // location present
-                const fullLocation = detailsTextArr[0].trim();
-                location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ").pop()}`;
-                const locationArr = location.split(" ");
-                campus === "V"
-                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${locationArr[0]}-${locationArr[locationArr.length - 1]}`
-                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${locationArr[0]}-${locationArr[locationArr.length - 1]}`;
-            }
+        }
+
+        try {
             days = detailsTextArr[detailsTextArr.length - 3].trim();
             time = detailsTextArr[detailsTextArr.length - 2].trim();
             
