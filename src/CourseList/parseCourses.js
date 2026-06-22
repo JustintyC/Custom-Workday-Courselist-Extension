@@ -100,58 +100,60 @@ export function parseCourses(courses) {
         
         // section details text: [campus] | [building] | [floor] | [room] | [days] | [time] | [date range]
         // location may or may not be present            
-        const detailsTextArr = promptOptions[1].textContent.split("|");
+        const detailsTextArr = promptOptions[1]?.textContent.split("|");
 
-        try {
-            // const fullLocation = detailsTextArr[0].trim();
-            // location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ").pop()}`;
-            // const locationArr = location.split(" ");
-            const building = detailsTextArr[1].split("(")[1].split(")")[0];
-            const room = detailsTextArr[3].split(":")[1].trim();
-            location = `${building} ${room}`;
+        if (detailsTextArr) {
+            try {
+                // const fullLocation = detailsTextArr[0].trim();
+                // location = `${fullLocation.split("-")[0]} ${fullLocation.split(" ").pop()}`;
+                // const locationArr = location.split(" ");
+                const building = detailsTextArr[1].split("(")[1].split(")")[0];
+                const room = detailsTextArr[3].split(":")[1].trim();
+                location = `${building} ${room}`;
 
-            campus === "V"
-                ? locationURL = `https://learningspaces.ubc.ca/classrooms/${building.toLowerCase()}-${room}`
-                : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${building.toLowerCase()}-${room}`;                
-        } catch (error) {
-            
-        }
-
-        try {
-            days = detailsTextArr[detailsTextArr.length - 3].trim();
-            time = detailsTextArr[detailsTextArr.length - 2].trim();
-            
-            /*
-            term logic
-
-            Check start and end dates. If start and end dates don't fall into the same term period,
-            set term to [Start term] - [End term]. Else just the term it is in
-
-            2025-01-06 - 2025-02-12
-            */
-            const range = detailsTextArr[detailsTextArr.length - 1].trim();
-            function getTerm(month) {
-                if (1 <= month && month <= 4) return "W2";
-                if (5 <= month && month <= 6) return "S1";
-                if (7 <= month && month <= 8) return "S2";
-                return "W1";
+                campus === "V"
+                    ? locationURL = `https://learningspaces.ubc.ca/classrooms/${building.toLowerCase()}-${room}`
+                    : locationURL = `https://learningspaces.ok.ubc.ca/classrooms/${building.toLowerCase()}-${room}`;                
+            } catch (error) {
+                
             }
-            
-            let startMonth = parseInt(range.substring(5, 7));
-            let startTerm = getTerm(startMonth);
-            
-            let endMonth = parseInt(range.substring(18, 20));
-            let endTerm = getTerm(endMonth);
 
-            if (startTerm !== endTerm) {
-                term = `${startTerm} - ${endTerm}`;
-            } else term = startTerm;
-        } catch (error) {
-            // section details is empty
-            term = "Unspecified Term";
-            days = "";
-            time = "";
-        }
+            try {
+                days = detailsTextArr[detailsTextArr.length - 3].trim();
+                time = detailsTextArr[detailsTextArr.length - 2].trim();
+                
+                /*
+                term logic
+
+                Check start and end dates. If start and end dates don't fall into the same term period,
+                set term to [Start term] - [End term]. Else just the term it is in
+
+                2025-01-06 - 2025-02-12
+                */
+                const range = detailsTextArr[detailsTextArr.length - 1].trim();
+                function getTerm(month) {
+                    if (1 <= month && month <= 4) return "W2";
+                    if (5 <= month && month <= 6) return "S1";
+                    if (7 <= month && month <= 8) return "S2";
+                    return "W1";
+                }
+                
+                let startMonth = parseInt(range.substring(5, 7));
+                let startTerm = getTerm(startMonth);
+                
+                let endMonth = parseInt(range.substring(18, 20));
+                let endTerm = getTerm(endMonth);
+
+                if (startTerm !== endTerm) {
+                    term = `${startTerm} - ${endTerm}`;
+                } else term = startTerm;
+            } catch (error) {
+                // section details is empty
+                term = "Unspecified Term";
+                days = "";
+                time = "";
+            }    
+        }        
 
         // URLs
         const urlDiv = promptOptions[0].parentElement;
